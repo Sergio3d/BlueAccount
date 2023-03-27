@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "412050975785",
+    "project_id": "blueaccount-e4707",
+    "storage_bucket": "blueaccount-e4707.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:412050975785:android:c027d31f28821be8890038",
+        "android_client_info": {
+          "package_name": "com.cumn.blueaccount"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "412050975785-obc4brfsv0o3t6qb04i59e1jkp6jksln.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cumn.blueaccount",
+            "certificate_hash": "6049c1b14548fedbd288161a599fc3286d1fade3"
+          }
+        },
+        {
+          "client_id": "412050975785-ao0tm256ghieujpfijuuel8gqfnhcmmt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsJju7EbCcMYL9VAgW8HTxggessMR8NLM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "412050975785-ao0tm256ghieujpfijuuel8gqfnhcmmt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
