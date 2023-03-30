@@ -7,6 +7,19 @@
     tools:context=".ui.dashboard.DashboardFragment">
 
 
+    <EditText
+        android:id="@+id/inputDescripcion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Descripcion"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputEtiqueta" />
+
     <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="wrap_content"
@@ -66,7 +79,7 @@
         android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="24dp"
         android:text="Etiqueta"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -84,7 +97,7 @@
         android:text="Fecha DD/MM/YYYY"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputEtiqueta" />
+        app:layout_constraintTop_toBottomOf="@+id/inputDescripcion" />
 
     <Button
         android:id="@+id/createButton"
