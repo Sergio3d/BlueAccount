@@ -20,7 +20,7 @@ import java.text.ParseException;
 public class TransaccionActivity extends AppCompatActivity {
 
     static String LOG_TAG = "BlueAccount";
-    public static final String PARAM_IDFECHA = "com.cumn.blueaccount.idfecha";
+    //public static final String PARAM_IDFECHA = "com.cumn.blueaccount.idfecha";
     public static final Boolean PARAM_GAS_ING = Boolean.valueOf("com.cumn.blueaccount.gas_ing");
     public static final String PARAM_DESCRIP = "com.cumn.blueaccount.descripcion";
     public static final String PARAM_ETIQUETA = "com.cumn.blueaccount.etiqueta";
@@ -71,6 +71,7 @@ public class TransaccionActivity extends AppCompatActivity {
                     }
                     fechaConvertida = new java.sql.Date(parsed.getTime());
                     setResult(RESULT_OK, replyIntent);
+
                 }
                 finish();
             }
