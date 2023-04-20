@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(binding.getRoot());
         setContentView(R.layout.authentication);
         findViewById(R.id.logoutButton).setOnClickListener(v -> {
             mFirebaseAuth.signOut();
@@ -119,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Home
 
-        //setContentView(R.layout.fragment_home);
+        setContentView(R.layout.fragment_home);
 
 
         Log.i("BAcc", "Se crea la vista Home");
@@ -131,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Nuevo
 
-        //setContentView(R.layout.fragment_nuevo);
+        setContentView(R.layout.fragment_nuevo);
 
         GastoButton = findViewById(R.id.GastoButton);
         IngresoButton = findViewById(R.id.IngresoButton);
