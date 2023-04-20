@@ -14,8 +14,8 @@
         android:layout_marginStart="40dp"
         android:layout_marginTop="30dp"
         android:ems="10"
+        android:hint="Descripcion"
         android:inputType="text"
-        android:text="Descripcion"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputEtiqueta" />
@@ -68,8 +68,8 @@
         android:layout_marginStart="40dp"
         android:layout_marginTop="30dp"
         android:ems="10"
+        android:hint="Cantidad"
         android:inputType="numberDecimal"
-        android:text="Cantidad"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
@@ -80,7 +80,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="24dp"
-        android:text="Etiqueta"
+        android:hint="Etiqueta"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputCantidad" />
@@ -93,8 +93,8 @@
         android:layout_marginStart="44dp"
         android:layout_marginTop="30dp"
         android:ems="10"
+        android:hint="Fecha DD/MM/YYYY"
         android:inputType="date"
-        android:text="Fecha DD/MM/YYYY"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputDescripcion" />
@@ -106,9 +106,10 @@
         android:layout_marginStart="40dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="40dp"
-        android:clickable="false"
+        android:clickable="true"
         android:text="Crear"
         android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputFecha" />

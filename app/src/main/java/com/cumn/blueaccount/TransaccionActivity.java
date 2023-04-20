@@ -1,5 +1,6 @@
 package com.cumn.blueaccount;
 
+import android.content.Context;
 import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
@@ -14,18 +15,20 @@ import android.widget.RadioButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.sql.Date;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.text.ParseException;
 
-public class TransaccionActivity extends AppCompatActivity {
+public class TransaccionActivity extends AppCompatActivity{
 
-    static String LOG_TAG = "BlueAccount";
-    //public static final String PARAM_IDFECHA = "com.cumn.blueaccount.idfecha";
+    /*public static final String PARAM_IDFECHA = "com.cumn.blueaccount.idfecha";
     public static final Boolean PARAM_GAS_ING = Boolean.valueOf("com.cumn.blueaccount.gas_ing");
     public static final String PARAM_DESCRIP = "com.cumn.blueaccount.descripcion";
     public static final String PARAM_ETIQUETA = "com.cumn.blueaccount.etiqueta";
     public static final Float PARAM_CANTIDAD = Float.valueOf("com.cumn.blueaccount.cantidad");
-    public static final Date PARAM_FECHA = Date.valueOf("com.cumn.blueaccount.fecha");
+    public static final Date PARAM_FECHA = Date.valueOf("com.cumn.blueaccount.fecha");*/
 
     private RadioButton GastoButton, IngresoButton;
     private Button createButton;
@@ -39,6 +42,7 @@ public class TransaccionActivity extends AppCompatActivity {
 
         Intent myIntent = getIntent();
 
+        Log.i("BAcc", "Se crea la vista Nuevo");
 
         GastoButton  = findViewById(R.id.GastoButton);
         IngresoButton = findViewById(R.id.IngresoButton);
@@ -48,35 +52,57 @@ public class TransaccionActivity extends AppCompatActivity {
         inputDescripcion = findViewById(R.id.inputDescripcion);
         inputEtiqueta = findViewById(R.id.inputEtiqueta);
 
-        final Button button = findViewById(R.id.createButton);
-        createButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent replyIntent = new Intent();
-                if ((TextUtils.isEmpty(GastoButton.getText()) || TextUtils.isEmpty(IngresoButton.getText())) && TextUtils.isEmpty(inputCantidad.getText())) {
-                    setResult(RESULT_CANCELED, replyIntent);
-                } else {
+        createButton = (Button) findViewById(R.id.createButton);
+        createButton.setOnClickListener(view -> {
 
-                    float cantidad = Float.parseFloat(inputCantidad.getText().toString().replace(",","."));
-                    Boolean gas_ing = GastoButton.isChecked();
-                    gas_ing = IngresoButton.isChecked();
-                    String etiqueta = inputEtiqueta.getText().toString();
-                    String descripcion = inputDescripcion.getText().toString();
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                    java.sql.Date fechaConvertida=null;
+            Intent replyIntent = new Intent();
+            Log.i("BAcc", "Boton CREAR apretado");
+            if ((TextUtils.isEmpty(GastoButton.getText()) || TextUtils.isEmpty(IngresoButton.getText())) && TextUtils.isEmpty(inputCantidad.getText())) {
+                setResult(RESULT_CANCELED, replyIntent);
+            } else {
+                float cantidad;
+                if (GastoButton.isChecked()) {
+                    cantidad = 0-Float.parseFloat(inputCantidad.getText().toString().replace(",","."));
+                }else{
+                    cantidad = Float.parseFloat(inputCantidad.getText().toString().replace(",","."));
+                }
+
+                String etiqueta = inputEtiqueta.getText().toString();
+
+                String descripcion = inputDescripcion.getText().toString();
+
+                String fechaConvertida = null;
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                if(TextUtils.isEmpty(inputFecha.getText())){
+                    Calendar calendar = Calendar.getInstance();
+                    fechaConvertida = dateFormat.format(calendar.getTime());
+                }else {
                     Date parsed = null;
                     try {
-                        parsed = (Date) dateFormat.parse(inputFecha.getText().toString());
+                        parsed = dateFormat.parse(inputFecha.getText().toString());
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    fechaConvertida = new java.sql.Date(parsed.getTime());
-                    setResult(RESULT_OK, replyIntent);
-
+                    fechaConvertida = new Date(parsed.getTime()).toString();
                 }
-                finish();
+
+                String cadena = cantidad+";"+etiqueta+";"+descripcion+";"+fechaConvertida;
+                try {
+                    FileOutputStream fos =openFileOutput( "librocuentas.csv", Context.MODE_APPEND);
+                    Log.i("BAcc", "Fichero librocuentas.csv generado");
+                    fos.write(cadena.getBytes());
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                setResult(RESULT_OK, replyIntent);
+
             }
+            finish();
         });
 
 
     }
+
 }
