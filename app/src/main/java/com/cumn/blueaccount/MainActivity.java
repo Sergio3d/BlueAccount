@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Home
 
-        //setContentView(R.layout.fragment_home);
+        setContentView(R.layout.fragment_home);
 
 
         Log.i("BAcc", "Se crea la vista Home");
@@ -69,8 +69,13 @@ public class MainActivity extends AppCompatActivity {
 
         //Nuevo
 
-        //setContentView(R.layout.fragment_nuevo);
+        setContentView(R.layout.fragment_nuevo);
 
+        botonCrear();
+    }
+
+    private void botonCrear() {
+        //setContentView(R.layout.fragment_nuevo);
         GastoButton = findViewById(R.id.GastoButton);
         IngresoButton = findViewById(R.id.IngresoButton);
         createButton = findViewById(R.id.createButton);
@@ -79,63 +84,55 @@ public class MainActivity extends AppCompatActivity {
         inputDescripcion = findViewById(R.id.inputDescripcion);
         inputEtiqueta = findViewById(R.id.inputEtiqueta);
 
-        botonCrear();
-    }
-
-    private void botonCrear() {
-        setContentView(R.layout.fragment_nuevo);
         createButton = findViewById(R.id.createButton);
-        createButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        createButton.setOnClickListener(v -> {
 
-                Intent replyIntent = new Intent();
-                Log.i("BAcc", "Boton CREAR apretado");
-                if ((TextUtils.isEmpty(GastoButton.getText()) || TextUtils.isEmpty(IngresoButton.getText())) && TextUtils.isEmpty(inputCantidad.getText())) {
-                    setResult(RESULT_CANCELED, replyIntent);
+            Intent replyIntent = new Intent();
+            Log.i("BAcc", "Boton CREAR apretado");
+            if ((TextUtils.isEmpty(GastoButton.getText()) || TextUtils.isEmpty(IngresoButton.getText())) && TextUtils.isEmpty(inputCantidad.getText())) {
+                setResult(RESULT_CANCELED, replyIntent);
+            } else {
+                float cantidad;
+                if (GastoButton.isChecked()) {
+                    cantidad = 0 - Float.parseFloat(inputCantidad.getText().toString().replace(",", "."));
                 } else {
-                    float cantidad;
-                    if (GastoButton.isChecked()) {
-                        cantidad = 0 - Float.parseFloat(inputCantidad.getText().toString().replace(",", "."));
-                    } else {
-                        cantidad = Float.parseFloat(inputCantidad.getText().toString().replace(",", "."));
-                    }
+                    cantidad = Float.parseFloat(inputCantidad.getText().toString().replace(",", "."));
+                }
 
-                    String etiqueta = inputEtiqueta.getText().toString();
+                String etiqueta = inputEtiqueta.getText().toString();
 
-                    String descripcion = inputDescripcion.getText().toString();
+                String descripcion = inputDescripcion.getText().toString();
 
-                    String fechaConvertida = null;
+                String fechaConvertida = null;
 
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    if (TextUtils.isEmpty(inputFecha.getText())) {
-                        Calendar calendar = Calendar.getInstance();
-                        fechaConvertida = dateFormat.format(calendar.getTime());
-                    } else {
-                        Date parsed = null;
-                        try {
-                            parsed = dateFormat.parse(inputFecha.getText().toString());
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                        assert parsed != null;
-                        fechaConvertida = new Date(parsed.getTime()).toString();
-                    }
-
-                    String cadena = cantidad + ";" + etiqueta + ";" + descripcion + ";" + fechaConvertida;
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                if (TextUtils.isEmpty(inputFecha.getText())) {
+                    Calendar calendar = Calendar.getInstance();
+                    fechaConvertida = dateFormat.format(calendar.getTime());
+                } else {
+                    Date parsed = null;
                     try {
-                        FileOutputStream fos = openFileOutput("librocuentas.csv", Context.MODE_APPEND);
-                        Log.i("BAcc", "Fichero librocuentas.csv generado");
-                        fos.write(cadena.getBytes());
-                        fos.close();
-                    } catch (IOException e) {
+                        parsed = dateFormat.parse(inputFecha.getText().toString());
+                    } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    setResult(RESULT_OK, replyIntent);
-
+                    assert parsed != null;
+                    fechaConvertida = new Date(parsed.getTime()).toString();
                 }
+
+                String cadena = cantidad + ";" + etiqueta + ";" + descripcion + ";" + fechaConvertida;
+                try {
+                    FileOutputStream fos = openFileOutput("librocuentas.csv", Context.MODE_APPEND);
+                    Log.i("BAcc", "Fichero librocuentas.csv generado");
+                    fos.write(cadena.getBytes());
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                setResult(RESULT_OK, replyIntent);
+
             }
         });
-        setContentView(binding.getRoot());
+        //setContentView(binding.getRoot());
     }
 }
