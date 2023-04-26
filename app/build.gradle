@@ -29,6 +29,7 @@ android {
     }
     buildFeatures {
         viewBinding true
+
     }
 }
 
@@ -44,6 +45,11 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.0.0-rc02'
     implementation 'com.google.firebase:firebase-analytics-ktx:21.2.0'
     implementation 'com.firebaseui:firebase-ui-auth:8.0.2'
+    // Import the BoM for the Firebase platform
+    implementation platform('com.google.firebase:firebase-bom:31.4.0')
+    // Add the dependency for the Realtime Database library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-database'
     implementation 'androidx.room:room-common:2.5.1'
     implementation 'androidx.room:room-runtime:2.5.1'
     //implementation 'com.android.support:design:28.0.0'

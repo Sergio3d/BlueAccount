@@ -23,6 +23,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.cumn.blueaccount.R;
 import com.cumn.blueaccount.databinding.FragmentNuevoBinding;
 import com.cumn.blueaccount.ui.home.HomeFragment;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -36,7 +38,6 @@ public class DashboardFragment extends Fragment {
     private RadioButton GastoButton, IngresoButton;
     private Button createButton;
     private EditText inputCantidad, inputFecha, inputDescripcion;
-    private AutoCompleteTextView inputEtiqueta;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -54,18 +55,49 @@ public class DashboardFragment extends Fragment {
         inputCantidad = root.findViewById(R.id.inputCantidad);
         inputFecha = root.findViewById(R.id.inputFecha);
         inputDescripcion = root.findViewById(R.id.inputDescripcion);
-        inputEtiqueta = root.findViewById(R.id.inputEtiqueta);
 
         createButton = (Button) root.findViewById(R.id.createButton);
         createButton.setOnClickListener(view -> {
 
-            HomeFragment.sumarCantidad(10);
             Context context = this.getContext();
-            CharSequence text = "+10€";
-            int duration = Toast.LENGTH_SHORT;
+            float cantidad;
+            if((TextUtils.isEmpty(GastoButton.getText()) || TextUtils.isEmpty(IngresoButton.getText())) && TextUtils.isEmpty(inputCantidad.getText())) {
+                if (GastoButton.isChecked()) {
+                    cantidad = 0 - Float.parseFloat(inputCantidad.getText().toString().replace(",", "."));
+                } else {
+                    cantidad = Float.parseFloat(inputCantidad.getText().toString().replace(",", "."));
+                }
 
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
+                String grupo = "Viaje Londres";
+
+                String fechaConvertida = null;
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                if (TextUtils.isEmpty(inputFecha.getText())) {
+                    Calendar calendar = Calendar.getInstance();
+                    fechaConvertida = dateFormat.format(calendar.getTime());
+                } else {
+                    Date parsed = null;
+                    try {
+                        parsed = dateFormat.parse(inputFecha.getText().toString());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    fechaConvertida = new Date(parsed.getTime()).toString();
+                }
+
+                // Write a message to the database
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference("/Grupos/" + grupo + "/Cuentas");
+                DatabaseReference cuenta = myRef.child(myRef.getKey() + 1);
+
+                cuenta.child("Mov").push().setValue(cantidad);
+                cuenta.child("Desc").push().setValue(inputDescripcion.getText().toString());
+                cuenta.child("Fecha").push().setValue(fechaConvertida);
+
+                Toast toast = Toast.makeText(context, "Cuenta Nueva", Toast.LENGTH_LONG);
+                toast.show();
+            }
         });
 
 

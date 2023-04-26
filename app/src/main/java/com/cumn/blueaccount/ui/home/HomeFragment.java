@@ -9,15 +9,26 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.cumn.blueaccount.R;
 import com.cumn.blueaccount.databinding.FragmentHomeBinding;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     private TextView cantTotal;
     private static float cantidad;
+    private ArrayList libroCuentas;
+    private RecyclerView lista;
+    //final TransacListAdapter adapter = new TransacListAdapter(this);
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -25,23 +36,40 @@ public class HomeFragment extends Fragment {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-        Log.i("BAcc", "Se crea la vista Home");
-        //final RecyclerView lista = (RecyclerView) findViewById(R.id.Lista);
-        //final TransacListAdapter adapter = new TransacListAdapter(this);
-
+        lista = (RecyclerView) root.findViewById(R.id.Lista);
         cantTotal = root.findViewById(R.id.cantTotal);
-        cantTotal.setText(String.valueOf(cantidad));
+
+        String grupo = "Viaje Londres";
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://blueaccount-e4707-default-rtdb.europe-west1.firebasedatabase.app");
+        DatabaseReference myRef = database.getReference("/Grupos/" + grupo + "/Cuentas");
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                cantidad = 0;
+                for (DataSnapshot child : myRef.get().getResult().getChildren()) {
+                    if (child.child("1").child("Mov").getValue() != null){
+                        libroCuentas.add(child.getValue());
+                        cantidad = cantidad + (Float) child.child("1").child("Mov").getValue();
+                    }
+
+                    cantTotal.setText(Float.toString(cantidad));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
         //homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
     public float getCantidad() {
         return cantidad;
-    }
-
-    public static void sumarCantidad(float cantidad) {
-        HomeFragment.cantidad = HomeFragment.cantidad + cantidad;
     }
 
     @Override
