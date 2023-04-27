@@ -20,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment {
 
@@ -38,6 +39,7 @@ public class HomeFragment extends Fragment {
         View root = binding.getRoot();
         lista = (RecyclerView) root.findViewById(R.id.Lista);
         cantTotal = root.findViewById(R.id.cantTotal);
+        libroCuentas = new ArrayList<Object>();
 
         String grupo = "Viaje Londres";
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://blueaccount-e4707-default-rtdb.europe-west1.firebasedatabase.app");
@@ -50,10 +52,10 @@ public class HomeFragment extends Fragment {
                 for (DataSnapshot child : snapshot.getChildren()) {
                     if (child.child("Mov").getValue() != null){
                         libroCuentas.add(child.child("Mov").getValue());
-                        cantidad = cantidad + (Float) child.child("Mov").getValue();
+                        cantidad = cantidad + Float.parseFloat(Objects.requireNonNull(child.child("Mov").getValue()).toString());
                     }
                 }
-                cantTotal.setText(Float.toString(cantidad));
+                cantTotal.setText(String.valueOf(cantidad));
             }
 
             @Override

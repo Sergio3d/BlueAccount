@@ -39,8 +39,7 @@ public class DashboardFragment extends Fragment {
     private Button createButton;
     private EditText inputCantidad, inputFecha, inputDescripcion;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         DashboardViewModel dashboardViewModel =
                 new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(DashboardViewModel.class);
 
@@ -51,24 +50,26 @@ public class DashboardFragment extends Fragment {
 
         GastoButton  = root.findViewById(R.id.GastoButton);
         IngresoButton = root.findViewById(R.id.IngresoButton);
-        createButton = root.findViewById(R.id.createButton);
         inputCantidad = root.findViewById(R.id.inputCantidad);
         inputFecha = root.findViewById(R.id.inputFecha);
         inputDescripcion = root.findViewById(R.id.inputDescripcion);
 
-        createButton = (Button) root.findViewById(R.id.createButton);
-        createButton.setOnClickListener(view -> {
 
-            Context context = this.getContext();
+        String grupo = "Viaje Londres";
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://blueaccount-e4707-default-rtdb.europe-west1.firebasedatabase.app");
+        DatabaseReference myRef = database.getReference("/Grupos/" + grupo + "/Cuentas");
+
+
+        createButton = root.findViewById(R.id.createButton);
+        createButton.setOnClickListener(v -> {
+
             float cantidad;
-            if((TextUtils.isEmpty(GastoButton.getText()) || TextUtils.isEmpty(IngresoButton.getText())) && TextUtils.isEmpty(inputCantidad.getText())) {
+            if ((!TextUtils.isEmpty(GastoButton.getText()) || !TextUtils.isEmpty(IngresoButton.getText())) && !TextUtils.isEmpty(inputCantidad.getText())) {
                 if (GastoButton.isChecked()) {
                     cantidad = 0 - Float.parseFloat(inputCantidad.getText().toString().replace(",", "."));
                 } else {
                     cantidad = Float.parseFloat(inputCantidad.getText().toString().replace(",", "."));
                 }
-
-                String grupo = "Viaje Londres";
 
                 String fechaConvertida = null;
 
@@ -87,15 +88,13 @@ public class DashboardFragment extends Fragment {
                 }
 
                 // Write a message to the database
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("/Grupos/" + grupo + "/Cuentas");
-                DatabaseReference cuenta = myRef.child(myRef.getKey() + 1);
+                DatabaseReference cuenta = myRef.push();
 
-                cuenta.child("Mov").push().setValue(cantidad);
-                cuenta.child("Desc").push().setValue(inputDescripcion.getText().toString());
-                cuenta.child("Fecha").push().setValue(fechaConvertida);
+                cuenta.child("Mov").setValue(cantidad);
+                cuenta.child("Desc").setValue(inputDescripcion.getText().toString());
+                cuenta.child("Fecha").setValue(fechaConvertida);
 
-                Toast toast = Toast.makeText(context, "Cuenta Nueva", Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(this.getContext(), "Cuenta Nueva", Toast.LENGTH_LONG);
                 toast.show();
             }
         });
