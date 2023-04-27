@@ -26,7 +26,7 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private TextView cantTotal;
     private static float cantidad;
-    private ArrayList libroCuentas;
+    private ArrayList<Object> libroCuentas;
     private RecyclerView lista;
     //final TransacListAdapter adapter = new TransacListAdapter(this);
 
@@ -43,26 +43,25 @@ public class HomeFragment extends Fragment {
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://blueaccount-e4707-default-rtdb.europe-west1.firebasedatabase.app");
         DatabaseReference myRef = database.getReference("/Grupos/" + grupo + "/Cuentas");
 
-        myRef.addValueEventListener(new ValueEventListener() {
+        ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 cantidad = 0;
-                for (DataSnapshot child : myRef.get().getResult().getChildren()) {
-                    if (child.child("1").child("Mov").getValue() != null){
-                        libroCuentas.add(child.getValue());
-                        cantidad = cantidad + (Float) child.child("1").child("Mov").getValue();
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    if (child.child("Mov").getValue() != null){
+                        libroCuentas.add(child.child("Mov").getValue());
+                        cantidad = cantidad + (Float) child.child("Mov").getValue();
                     }
-
-                    cantTotal.setText(Float.toString(cantidad));
                 }
+                cantTotal.setText(Float.toString(cantidad));
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
-
+        };
+        myRef.addListenerForSingleValueEvent(eventListener);
 
         //homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
