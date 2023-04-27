@@ -37,6 +37,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import androidx.annotation.NonNull;
 
@@ -46,6 +49,8 @@ import com.firebase.ui.auth.BuildConfig;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 public class MainActivity extends AppCompatActivity {
+
+    private static final String Api_Base_URL = "https://api.exchangerate.host/latest";
 
     private ActivityMainBinding binding;
     private TextView cantTotal;
@@ -59,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     private static final int RC_SIGN_IN = 2022;
-
+    private ExangeRate exangeRate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,13 +82,30 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-        //AUTH
+        //Home
 
-        setContentView(R.layout.authentication);
-        findViewById(R.id.logoutButton).setOnClickListener(v -> {
-            mFirebaseAuth.signOut();
-            Log.i(LOG_TAG, getString(R.string.signed_out));
-        });
+        //setContentView(R.layout.fragment_home);
+
+
+        Log.i("BAcc", "Se crea la vista Home");
+        //final RecyclerView lista = (RecyclerView) findViewById(R.id.Lista);
+        //final TransacListAdapter adapter = new TransacListAdapter(this);
+
+        cantTotal = findViewById(R.id.cantTotal);
+        cantTotal.setText(HomeActivity.getTotal());
+
+        //Nuevo
+
+        //setContentView(R.layout.fragment_nuevo);
+
+        GastoButton = findViewById(R.id.GastoButton);
+        IngresoButton = findViewById(R.id.IngresoButton);
+        createButton = findViewById(R.id.createButton);
+        inputCantidad = findViewById(R.id.inputCantidad);
+        inputFecha = findViewById(R.id.inputFecha);
+        inputDescripcion = findViewById(R.id.inputDescripcion);
+        inputEtiqueta = findViewById(R.id.inputEtiqueta);
+
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
@@ -95,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                     CharSequence username = user.getDisplayName();
                     Toast.makeText(MainActivity.this, getString(R.string.firebase_user_fmt, username), Toast.LENGTH_LONG).show();
                     Log.i(LOG_TAG, "onAuthStateChanged() " + getString(R.string.firebase_user_fmt, username));
-                    
+
                 } else {
                     // user is signed out
                     startActivityForResult(
@@ -121,32 +143,114 @@ public class MainActivity extends AppCompatActivity {
         };
 
         setContentView(binding.getRoot());
-
     }
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_IN) {
-            if (resultCode == RESULT_OK) {
-                Toast.makeText(this, R.string.signed_in, Toast.LENGTH_SHORT).show();
-                Log.i(LOG_TAG, "onActivityResult " + getString(R.string.signed_in));
-            } else if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(this, R.string.signed_cancelled, Toast.LENGTH_SHORT).show();
-                Log.i(LOG_TAG, "onActivityResult " + getString(R.string.signed_cancelled));
-                finish();
-            }
+        protected void onPause() {
+            super.onPause();
+            mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
         }
+
+        @Override
+        protected void onResume() {
+            super.onResume();
+            mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+        }
+
+        @Override
+        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+            super.onActivityResult(requestCode, resultCode, data);
+            if (requestCode == RC_SIGN_IN) {
+                if (resultCode == RESULT_OK) {
+                    Toast.makeText(this, R.string.signed_in, Toast.LENGTH_SHORT).show();
+                    Log.i(LOG_TAG, "onActivityResult " + getString(R.string.signed_in));
+                } else if (resultCode == RESULT_CANCELED) {
+                    Toast.makeText(this, R.string.signed_cancelled, Toast.LENGTH_SHORT).show();
+                    Log.i(LOG_TAG, "onActivityResult " + getString(R.string.signed_cancelled));
+                    finish();
+                }
+            }
+
+
+        //de la api
+        exangeRate = ExangeRateClient.getClient().create(ExangeRate.class);
+
+        Call<ExangerateResponse> call = exangeRate.getLatestExangeRates("EUR","USD");
+        call.enqueue(new Callback<ExangerateResponse>() {
+            @Override
+            public void onResponse(Call<ExangerateResponse> call, Response<ExangerateResponse> response) {
+                if (response.isSuccessful()) {
+                    ExangerateResponse exangerateResponse = response.body();
+                    String baseCurrency = exangerateResponse.getBase();
+                    String date = exangerateResponse.getDate();
+                    ExangeRate rates = exangerateResponse.getRates();
+                } else {
+                    int error = response.code();
+                    String errorMessage = response.message();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ExangerateResponse> call, Throwable t) {
+
+            }
+        });
     }
-}
+        private void botonCrear() {
+            setContentView(R.layout.fragment_nuevo);
+            createButton = findViewById(R.id.createButton);
+            createButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent replyIntent = new Intent();
+                    Log.i("BAcc", "Boton CREAR apretado");
+                    if ((TextUtils.isEmpty(GastoButton.getText()) || TextUtils.isEmpty(IngresoButton.getText())) && TextUtils.isEmpty(inputCantidad.getText())) {
+                        setResult(RESULT_CANCELED, replyIntent);
+                    } else {
+                        float cantidad;
+                        if (GastoButton.isChecked()) {
+                            cantidad = 0 - Float.parseFloat(inputCantidad.getText().toString().replace(",", "."));
+                        } else {
+                            cantidad = Float.parseFloat(inputCantidad.getText().toString().replace(",", "."));
+                        }
+
+                        String etiqueta = inputEtiqueta.getText().toString();
+
+                        String descripcion = inputDescripcion.getText().toString();
+
+                        String fechaConvertida = null;
+
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        if (TextUtils.isEmpty(inputFecha.getText())) {
+                            Calendar calendar = Calendar.getInstance();
+                            fechaConvertida = dateFormat.format(calendar.getTime());
+                        } else {
+                            Date parsed = null;
+                            try {
+                                parsed = dateFormat.parse(inputFecha.getText().toString());
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            assert parsed != null;
+                            fechaConvertida = new Date(parsed.getTime()).toString();
+                        }
+
+                        String cadena = cantidad + ";" + etiqueta + ";" + descripcion + ";" + fechaConvertida;
+                        try {
+                            FileOutputStream fos = openFileOutput("librocuentas.csv", Context.MODE_APPEND);
+                            Log.i("BAcc", "Fichero librocuentas.csv generado");
+                            fos.write(cadena.getBytes());
+                            fos.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        setResult(RESULT_OK, replyIntent);
+
+                    }
+                }
+            });
+            setContentView(binding.getRoot());
+        }
+
+
+
+    }

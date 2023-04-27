@@ -3,10 +3,11 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-
     <string name="signed_in">Signed in!</string>
     <string name="signed_out">Signed out!</string>
     <string name="signed_cancelled">Signed in cancelled</string>
     <string name="logout_button">Logout</string>
     <string name="firebase_user_fmt">Firebase User: %s</string>
+    <string name="android_sdk_places_api_key">AIzaSyCrzpnvGlX6jo9w03s-j8LuMZsUWsAWLzo</string>
+
 </resources>
