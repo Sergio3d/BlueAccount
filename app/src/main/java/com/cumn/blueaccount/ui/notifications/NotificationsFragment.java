@@ -1,5 +1,6 @@
 package com.cumn.blueaccount.ui.notifications;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.cumn.blueaccount.CreaGrupoActivity;
+import com.cumn.blueaccount.MainActivity;
 import com.cumn.blueaccount.R;
 import com.cumn.blueaccount.databinding.FragmentGruposBinding;
+
+import java.util.Objects;
 
 public class NotificationsFragment extends Fragment {
 
@@ -28,7 +33,8 @@ public class NotificationsFragment extends Fragment {
 
         creaGrupo = root.findViewById(R.id.bCreaGrupo);
         creaGrupo.setOnClickListener(v -> {
-
+            Intent creagrupo = new Intent(NotificationsFragment.this.getContext(), CreaGrupoActivity.class);
+            startActivity(creagrupo);
         });
 
 

@@ -26,6 +26,15 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <!--Add Other activities like this-->
+        <activity
+            android:name=".CreaGrupoActivity"
+            android:exported="true">
+            <!--Default Intent Filter-->
+            <intent-filter>
+                <action android:name="android.intent.action.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
