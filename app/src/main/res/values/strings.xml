@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">BlueAccount</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_dashboard">Nuevo</string>
+    <string name="title_notifications">Grupos</string>
     <string name="signed_in">Signed in!</string>
     <string name="signed_out">Signed out!</string>
     <string name="signed_cancelled">Signed in cancelled</string>

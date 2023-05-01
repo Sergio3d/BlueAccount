@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.cumn.blueaccount.R;
@@ -31,6 +33,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 public class DashboardFragment extends Fragment {
 
@@ -96,12 +99,21 @@ public class DashboardFragment extends Fragment {
 
                 Toast toast = Toast.makeText(this.getContext(), "Cuenta Nueva", Toast.LENGTH_LONG);
                 toast.show();
+
+                // Crear fragmento de tu clase
+                Fragment fragment = new HomeFragment();
+                // Obtener el administrador de fragmentos a través de la actividad
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                // Definir una transacción
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                // Remplazar el contenido principal por el fragmento
+                fragmentTransaction.replace(R.id.nav_host_fragment_activity_main, fragment);
+                fragmentTransaction.addToBackStack(null);
+                // Cambiar
+                fragmentTransaction.commit();
             }
         });
 
-
-        //final TextView textView = binding.textNuevo;
-        // dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
