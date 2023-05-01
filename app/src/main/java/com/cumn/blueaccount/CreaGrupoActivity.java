@@ -1,19 +1,23 @@
 package com.cumn.blueaccount;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.MultiAutoCompleteTextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.ExportedUserRecord;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.ListUsersPage;
+import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -41,7 +45,7 @@ public class CreaGrupoActivity extends AppCompatActivity {
         creaGrupo = findViewById(R.id.bCreaGrupo);
         creaGrupo.setOnClickListener(v ->{
 
-            // Start listing users from the beginning, 1000 at a time.
+         /*   // Start listing users from the beginning, 1000 at a time.
             ListUsersPage page = null;
             try {
                 FirebaseApp defaultApp = FirebaseApp.initializeApp();
@@ -78,15 +82,37 @@ public class CreaGrupoActivity extends AppCompatActivity {
 
             // Default CommaTokenizer is used here
             multiAutoCompleteTextViewDefault.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+            */
+
+            DatabaseReference newGrupo = myRef.child(nombreGrupo.getText().toString());
 
             newGrupo.child("Cuentas");
-            List<String> miembros = Arrays.asList(multiAutoCompleteTextViewDefault.getText().toString().split("\\s*,\\s*"));
+            List<String> miembros = Arrays.asList(textMiembros.getText().toString().split("\\s*,\\s*"));
             for (String user : miembros ) {
-                newGrupo.child("Usuarios").push().setValue();
+                newGrupo.child("Usuarios").push().setValue(user);
             }
 
         });
 
+    }
 
+    void checkEmailExistsOrNot(){
+        FirebaseAuth firebaseauth = FirebaseAuth.getInstance();
+        firebaseauth.fetchSignInMethodsForEmail(textMiembros.getText().toString()).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+            @Override
+            public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                if (task.getResult().getSignInMethods().size() == 0){
+                    // email not existed
+                }else {
+                    // email existed
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 }
