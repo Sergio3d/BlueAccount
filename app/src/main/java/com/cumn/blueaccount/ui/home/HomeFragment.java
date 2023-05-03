@@ -1,5 +1,7 @@
 package com.cumn.blueaccount.ui.home;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,11 +44,12 @@ public class HomeFragment extends Fragment {
         nombreGrupo = root.findViewById(R.id.textNombreGrupo);
         libroCuentas = new ArrayList<Object>();
 
-        String grupo = MainActivity.getGrupoActual();
+        SharedPreferences sharedPref = this.getActivity().getPreferences(Context.MODE_PRIVATE);
+        String grupo = getResources().getString(R.string.grupoActual);
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://blueaccount-e4707-default-rtdb.europe-west1.firebasedatabase.app");
         DatabaseReference misCuentas = database.getReference("/Grupos/"+ grupo + "/Cuentas");
 
-        nombreGrupo.setText(MainActivity.getGrupoActual());
+        nombreGrupo.setText(grupo);
 
         ValueEventListener eventListener = new ValueEventListener() {
             @Override

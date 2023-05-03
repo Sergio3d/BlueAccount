@@ -2,6 +2,7 @@ package com.cumn.blueaccount.ui.dashboard;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -61,13 +62,16 @@ public class DashboardFragment extends Fragment {
         inputDescripcion = root.findViewById(R.id.inputDescripcion);
 
 
-        String grupo = MainActivity.getGrupoActual();
-        FirebaseDatabase database = FirebaseDatabase.getInstance("https://blueaccount-e4707-default-rtdb.europe-west1.firebasedatabase.app");
-        DatabaseReference myRef = database.getReference("/Grupos/"+ grupo + "/Cuentas");
+
 
 
         createButton = root.findViewById(R.id.createButton);
         createButton.setOnClickListener(v -> {
+
+            SharedPreferences sharedPref = this.getActivity().getPreferences(Context.MODE_PRIVATE);
+            String grupo = getResources().getString(R.string.grupoActual);
+            FirebaseDatabase database = FirebaseDatabase.getInstance("https://blueaccount-e4707-default-rtdb.europe-west1.firebasedatabase.app");
+            DatabaseReference myRef = database.getReference("/Grupos/"+ grupo + "/Cuentas");
 
             float cantidad;
             if ((!TextUtils.isEmpty(GastoButton.getText()) || !TextUtils.isEmpty(IngresoButton.getText())) && !TextUtils.isEmpty(inputCantidad.getText())) {
@@ -93,18 +97,6 @@ public class DashboardFragment extends Fragment {
 
                 Toast toast = Toast.makeText(this.getContext(), "Cuenta Nueva", Toast.LENGTH_LONG);
                 toast.show();
-
-                // Crear fragmento de tu clase
-                Fragment fragment = new HomeFragment();
-                // Obtener el administrador de fragmentos a través de la actividad
-                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                // Definir una transacción
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                // Remplazar el contenido principal por el fragmento
-                fragmentTransaction.replace(R.id.nav_host_fragment_activity_main, fragment);
-                fragmentTransaction.addToBackStack(null);
-                // Cambiar
-                fragmentTransaction.commit();
             }
         });
 

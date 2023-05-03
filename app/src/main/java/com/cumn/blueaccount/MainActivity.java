@@ -1,12 +1,17 @@
 package com.cumn.blueaccount;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import androidx.activity.result.ActivityResult;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.navigation.NavController;
@@ -45,17 +50,6 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
-    private static String grupoActual;
-
-    public static String getGrupoActual() {
-        return grupoActual;
-    }
-
-    public static void setGrupoActual(String grupoActual) {
-        MainActivity.grupoActual = grupoActual;
-    }
-
-
     private static final int RC_SIGN_IN = 2022;
     private ExangeRate exangeRate;
     @Override
@@ -75,8 +69,10 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-        //Grupo
-        this.setGrupoActual("Viaje Londres");
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(getString(R.string.grupoActual), "Yo");
+        editor.apply();
 
         //AUTH
 

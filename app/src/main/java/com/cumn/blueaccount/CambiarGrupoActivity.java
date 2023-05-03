@@ -1,6 +1,10 @@
 package com.cumn.blueaccount;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -39,10 +43,14 @@ public class CambiarGrupoActivity extends AppCompatActivity {
         String user = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getEmail();
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://blueaccount-e4707-default-rtdb.europe-west1.firebasedatabase.app");
         DatabaseReference myRef = database.getReference("/Grupos/");
-        myRef.endAt(user).startAt(user).get().addOnCompleteListener((OnCompleteListener<DataSnapshot>) task -> {
+        myRef.get().addOnCompleteListener((OnCompleteListener<DataSnapshot>) task -> {
             if (task.isSuccessful()) {
                 for (DataSnapshot child : task.getResult().getChildren()) {
-                    grupos.add(child.getKey());
+                    for (DataSnapshot member : child.child("Usuarios").getChildren()){
+                        if(Objects.requireNonNull(member.getValue()).toString().equals(user)){
+                            grupos.add(Objects.requireNonNull(child.getKey()).toString());
+                        }
+                    }
                 }
                 adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, grupos);
                 listaGrupos.setAdapter(adapter);
@@ -52,12 +60,14 @@ public class CambiarGrupoActivity extends AppCompatActivity {
             }
         });
 
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         listaGrupos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String gruposelect = grupos.get(position);
-                MainActivity.setGrupoActual(gruposelect);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString(getString(R.string.grupoActual), gruposelect);
+                editor.apply();
                 Intent cambiagrupo = new Intent(CambiarGrupoActivity.this.getBaseContext(), MainActivity.class);
                 startActivity(cambiagrupo);
             }
