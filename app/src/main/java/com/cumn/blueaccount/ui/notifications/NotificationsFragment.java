@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.cumn.blueaccount.CambiarGrupoActivity;
 import com.cumn.blueaccount.CreaGrupoActivity;
 import com.cumn.blueaccount.MainActivity;
 import com.cumn.blueaccount.R;
@@ -22,7 +23,7 @@ public class NotificationsFragment extends Fragment {
 
     private FragmentGruposBinding binding;
 
-    private Button creaGrupo;
+    private Button creaGrupo, cambiaGrupo;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -37,6 +38,11 @@ public class NotificationsFragment extends Fragment {
             startActivity(creagrupo);
         });
 
+        cambiaGrupo = root.findViewById(R.id.bCambiaGrupo);
+        cambiaGrupo.setOnClickListener(v -> {
+            Intent cambiargrupo = new Intent(NotificationsFragment.this.getContext(), CambiarGrupoActivity.class);
+            startActivity(cambiargrupo);
+        });
 
         return root;
     }

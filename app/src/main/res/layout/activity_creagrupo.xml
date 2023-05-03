@@ -23,27 +23,41 @@
 
     <Button
         android:id="@+id/bCrearGrupo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="90dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="90dp"
+        android:layout_width="177dp"
+        android:layout_height="62dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="10dp"
+        android:backgroundTint="@color/teal_200"
         android:text="Crear Grupo"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/bCrearGrupoCancelar"
+        app:layout_constraintTop_toBottomOf="@+id/inputMiembros" />
+
+    <Button
+        android:id="@+id/bCrearGrupoCancelar"
+        android:layout_width="177dp"
+        android:layout_height="62dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="10dp"
+        android:text="Cancelar"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/bCrearGrupo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputMiembros" />
 
     <EditText
         android:id="@+id/inputMiembros"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="300dp"
         android:layout_marginStart="90dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="90dp"
         android:ems="10"
         android:gravity="start|top"
-        android:hint="Añade miembros"
+        android:hint="Añade miembros:  xxxx@gmail.com   xxx@email.com"
         android:inputType="textMultiLine"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"

@@ -23,7 +23,7 @@ public class TransacListAdapter extends RecyclerView.Adapter<TransacListAdapter.
         public ItemViewHolder(View view) {
             super(view);
             cantidad = (TextView) view.findViewById(R.id.textCantItem);
-            etiqueta = (TextView) view.findViewById(R.id.textEtiquetaItem);
+            etiqueta = (TextView) view.findViewById(R.id.textDesc);
             fecha = (TextView) view.findViewById(R.id.textFechaItem);
             botonBorrar = (Button) view.findViewById(R.id.buttonBorrarItem);
         }

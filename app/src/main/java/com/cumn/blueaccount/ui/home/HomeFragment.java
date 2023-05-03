@@ -1,7 +1,6 @@
 package com.cumn.blueaccount.ui.home;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cumn.blueaccount.MainActivity;
 import com.cumn.blueaccount.R;
 import com.cumn.blueaccount.databinding.FragmentHomeBinding;
 import com.google.firebase.database.DataSnapshot;
@@ -25,7 +25,7 @@ import java.util.Objects;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
-    private TextView cantTotal;
+    private TextView cantTotal, nombreGrupo;
     private static float cantidad;
     private ArrayList<Object> libroCuentas;
     private RecyclerView lista;
@@ -39,11 +39,14 @@ public class HomeFragment extends Fragment {
         View root = binding.getRoot();
         lista = (RecyclerView) root.findViewById(R.id.Lista);
         cantTotal = root.findViewById(R.id.cantTotal);
+        nombreGrupo = root.findViewById(R.id.textNombreGrupo);
         libroCuentas = new ArrayList<Object>();
 
-        String grupo = "Viaje Londres";
+        String grupo = MainActivity.getGrupoActual();
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://blueaccount-e4707-default-rtdb.europe-west1.firebasedatabase.app");
-        DatabaseReference myRef = database.getReference("/Grupos/" + grupo + "/Cuentas");
+        DatabaseReference misCuentas = database.getReference("/Grupos/"+ grupo + "/Cuentas");
+
+        nombreGrupo.setText(MainActivity.getGrupoActual());
 
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
@@ -63,7 +66,7 @@ public class HomeFragment extends Fragment {
 
             }
         };
-        myRef.addListenerForSingleValueEvent(eventListener);
+        misCuentas.addListenerForSingleValueEvent(eventListener);
 
         //homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;

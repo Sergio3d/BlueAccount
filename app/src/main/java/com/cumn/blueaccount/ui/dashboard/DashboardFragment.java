@@ -22,6 +22,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.cumn.blueaccount.MainActivity;
 import com.cumn.blueaccount.R;
 import com.cumn.blueaccount.databinding.FragmentNuevoBinding;
 import com.cumn.blueaccount.ui.home.HomeFragment;
@@ -58,9 +59,9 @@ public class DashboardFragment extends Fragment {
         inputDescripcion = root.findViewById(R.id.inputDescripcion);
 
 
-        String grupo = "Viaje Londres";
+        String grupo = MainActivity.getGrupoActual();
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://blueaccount-e4707-default-rtdb.europe-west1.firebasedatabase.app");
-        DatabaseReference myRef = database.getReference("/Grupos/" + grupo + "/Cuentas");
+        DatabaseReference myRef = database.getReference("/Grupos/"+ grupo + "/Cuentas");
 
 
         createButton = root.findViewById(R.id.createButton);
