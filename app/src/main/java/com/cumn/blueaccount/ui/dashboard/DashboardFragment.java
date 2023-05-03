@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -41,6 +42,7 @@ public class DashboardFragment extends Fragment {
     private FragmentNuevoBinding binding;
     private RadioButton GastoButton, IngresoButton;
     private Button createButton;
+    private CalendarView inputCalendar;
     private EditText inputCantidad, inputFecha, inputDescripcion;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,7 +57,7 @@ public class DashboardFragment extends Fragment {
         GastoButton  = root.findViewById(R.id.GastoButton);
         IngresoButton = root.findViewById(R.id.IngresoButton);
         inputCantidad = root.findViewById(R.id.inputCantidad);
-        inputFecha = root.findViewById(R.id.inputFecha);
+        inputCalendar = root.findViewById(R.id.calendarView);
         inputDescripcion = root.findViewById(R.id.inputDescripcion);
 
 
@@ -78,24 +80,15 @@ public class DashboardFragment extends Fragment {
                 String fechaConvertida = null;
 
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                if (TextUtils.isEmpty(inputFecha.getText())) {
-                    Calendar calendar = Calendar.getInstance();
-                    fechaConvertida = dateFormat.format(calendar.getTime());
-                } else {
-                    Date parsed = null;
-                    try {
-                        parsed = dateFormat.parse(inputFecha.getText().toString());
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    fechaConvertida = new Date(parsed.getTime()).toString();
-                }
 
                 // Write a message to the database
                 DatabaseReference cuenta = myRef.push();
 
                 cuenta.child("Mov").setValue(cantidad);
                 cuenta.child("Desc").setValue(inputDescripcion.getText().toString());
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(inputCalendar.getDate());
+                fechaConvertida = dateFormat.format(calendar.getTime());
                 cuenta.child("Fecha").setValue(fechaConvertida);
 
                 Toast toast = Toast.makeText(this.getContext(), "Cuenta Nueva", Toast.LENGTH_LONG);

@@ -34,8 +34,7 @@ public class CreaGrupoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_creagrupo);
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance("https://blueaccount-e4707-default-rtdb.europe-west1.firebasedatabase.app");
-        DatabaseReference newGrupo = database.getReference("/Grupos/" +nombreGrupo.getText().toString());
+
 
         //getActionBar().setDisplayHomeAsUpEnabled(true);
         textMiembros = findViewById(R.id.inputMiembros);
@@ -46,6 +45,8 @@ public class CreaGrupoActivity extends AppCompatActivity {
             ArrayList<String> newmiembros = new ArrayList<String>(Arrays.asList(textMiembros.getText().toString().split("\\s*[;, \n]\\s*")));
             ArrayList<String> miembros = new ArrayList<>();
 
+            FirebaseDatabase database = FirebaseDatabase.getInstance("https://blueaccount-e4707-default-rtdb.europe-west1.firebasedatabase.app");
+            DatabaseReference newGrupo = database.getReference("/Grupos/" +nombreGrupo.getText().toString());
             DatabaseReference usuarioRef = newGrupo.child("Usuarios");
             usuarioRef.orderByKey()
                     .get()
