@@ -23,6 +23,7 @@ import com.cumn.blueaccount.databinding.ActivityMainBinding;
 
 import java.util.Arrays;
 
+import android.view.View;
 import android.widget.Toast;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,12 +41,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private static final String Api_Base_URL = "https://api.exchangerate.host/latest";
 
     private ActivityMainBinding binding;
-    final static String LOG_TAG = "btb";
+    final static String LOG_TAG = "blueaccount";
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
 
         //AUTH
-
+        findViewById(R.id.logoutButton).setOnClickListener(this);
         mFirebaseAuth = FirebaseAuth.getInstance();
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -139,9 +140,38 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-
         //de la api
 
+<<<<<<< Updated upstream
        
+=======
+        Call<ExangerateResponse> call = exangeRate.getLatestExangeRates("EUR","USD");
+        call.enqueue(new Callback<ExangerateResponse>() {
+            @Override
+            public void onResponse(Call<ExangerateResponse> call, Response<ExangerateResponse> response) {
+                if (response.isSuccessful()) {
+                    ExangerateResponse exangerateResponse = response.body();
+                    String baseCurrency = exangerateResponse.getBase();
+                    String date = exangerateResponse.getDate();
+                    ExangeRate rates = exangerateResponse.getRates();
+                } else {
+                    int error = response.code();
+                    String errorMessage = response.message();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ExangerateResponse> call, Throwable t) {
+
+            }
+        });
+        }
+
+    @Override
+    public void onClick(View v) {
+        mFirebaseAuth.signOut();
+        Log.i(LOG_TAG, getString(R.string.signed_out));
+>>>>>>> Stashed changes
     }
 }
+
