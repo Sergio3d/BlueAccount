@@ -74,9 +74,9 @@ public class CreaGrupoActivity extends AppCompatActivity {
                         }else if (!miembros.contains(user)){
                             newGrupo.child("Usuarios").push().setValue(user);
                         }
-                        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+                        SharedPreferences sharedPref = CreaGrupoActivity.this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
-                        editor.putString(getString(R.string.grupoActual), nombreGrupo.getText().toString());
+                        editor.putString("grupoActual", nombreGrupo.getText().toString());
                         editor.apply();
                         volverMain();
 

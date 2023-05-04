@@ -68,8 +68,8 @@ public class DashboardFragment extends Fragment {
         createButton = root.findViewById(R.id.createButton);
         createButton.setOnClickListener(v -> {
 
-            SharedPreferences sharedPref = this.getActivity().getPreferences(Context.MODE_PRIVATE);
-            String grupo = getResources().getString(R.string.grupoActual);
+            SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.rutaPreferences),Context.MODE_PRIVATE);
+            String grupo = sharedPref.getString("grupoActual", "Yo");
             FirebaseDatabase database = FirebaseDatabase.getInstance("https://blueaccount-e4707-default-rtdb.europe-west1.firebasedatabase.app");
             DatabaseReference myRef = database.getReference("/Grupos/"+ grupo + "/Cuentas");
 

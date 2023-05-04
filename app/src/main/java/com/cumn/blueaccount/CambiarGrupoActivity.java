@@ -60,14 +60,16 @@ public class CambiarGrupoActivity extends AppCompatActivity {
             }
         });
 
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         listaGrupos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                SharedPreferences sharedPref = CambiarGrupoActivity.this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
                 String gruposelect = grupos.get(position);
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString(getString(R.string.grupoActual), gruposelect);
+                editor.putString("grupoActual", gruposelect);
                 editor.apply();
+                //Toast toast = Toast.makeText(CambiarGrupoActivity.this.getBaseContext(), getString(R.string.grupoActual), Toast.LENGTH_LONG);
+                //toast.show();
                 Intent cambiagrupo = new Intent(CambiarGrupoActivity.this.getBaseContext(), MainActivity.class);
                 startActivity(cambiagrupo);
             }

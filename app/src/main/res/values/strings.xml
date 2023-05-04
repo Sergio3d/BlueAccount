@@ -9,6 +9,6 @@
     <string name="logout_button">Logout</string>
     <string name="firebase_user_fmt">Firebase User: %s</string>
     <string name="android_sdk_places_api_key">AIzaSyCrzpnvGlX6jo9w03s-j8LuMZsUWsAWLzo</string>
-    <string name="grupoActual">Yo</string>
+    <string name="rutaPreferences">com.cumn.blueaccount.PREFERENCE_FILE_KEY</string>
 
 </resources>
