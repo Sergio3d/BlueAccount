@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     private static final int RC_SIGN_IN = 2022;
-    private ExangeRate exangeRate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,27 +141,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //de la api
-        exangeRate = ExangeRateClient.getClient().create(ExangeRate.class);
 
-        Call<ExangerateResponse> call = exangeRate.getLatestExangeRates("EUR","USD");
-        call.enqueue(new Callback<ExangerateResponse>() {
-            @Override
-            public void onResponse(Call<ExangerateResponse> call, Response<ExangerateResponse> response) {
-                if (response.isSuccessful()) {
-                    ExangerateResponse exangerateResponse = response.body();
-                    String baseCurrency = exangerateResponse.getBase();
-                    String date = exangerateResponse.getDate();
-                    ExangeRate rates = exangerateResponse.getRates();
-                } else {
-                    int error = response.code();
-                    String errorMessage = response.message();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ExangerateResponse> call, Throwable t) {
-
-            }
-        });
+       
     }
 }

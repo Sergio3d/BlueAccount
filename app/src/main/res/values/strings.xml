@@ -10,5 +10,5 @@
     <string name="firebase_user_fmt">Firebase User: %s</string>
     <string name="android_sdk_places_api_key">AIzaSyCrzpnvGlX6jo9w03s-j8LuMZsUWsAWLzo</string>
     <string name="grupoActual">Yo</string>
-
+    <string name="select">Select Item</string>
 </resources>
