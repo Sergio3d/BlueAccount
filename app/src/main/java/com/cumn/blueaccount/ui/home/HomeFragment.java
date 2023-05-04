@@ -44,8 +44,10 @@ public class HomeFragment extends Fragment {
         nombreGrupo = root.findViewById(R.id.textNombreGrupo);
         libroCuentas = new ArrayList<Object>();
 
-        SharedPreferences sharedPref = this.getActivity().getPreferences(Context.MODE_PRIVATE);
-        String grupo = getResources().getString(R.string.grupoActual);
+
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.rutaPreferences),Context.MODE_PRIVATE);
+        String grupo = sharedPref.getString("grupoActual", "Yo");
+
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://blueaccount-e4707-default-rtdb.europe-west1.firebasedatabase.app");
         DatabaseReference misCuentas = database.getReference("/Grupos/"+ grupo + "/Cuentas");
 

@@ -69,9 +69,9 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = MainActivity.this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(getString(R.string.grupoActual), "Yo");
+        editor.putString("grupoActual", "Yo");
         editor.apply();
 
         //AUTH
