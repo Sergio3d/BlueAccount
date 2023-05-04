@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.cumn.blueaccount.MainActivity;
 import com.cumn.blueaccount.R;
@@ -47,8 +48,7 @@ public class DashboardFragment extends Fragment {
     private EditText inputCantidad, inputFecha, inputDescripcion;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        DashboardViewModel dashboardViewModel =
-                new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(DashboardViewModel.class);
+        DashboardViewModel dashboardViewModel = new ViewModelProvider((ViewModelStoreOwner) this, (ViewModelProvider.Factory) new ViewModelProvider.NewInstanceFactory()).get(DashboardViewModel.class);
 
         binding = FragmentNuevoBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -62,14 +62,14 @@ public class DashboardFragment extends Fragment {
         inputDescripcion = root.findViewById(R.id.inputDescripcion);
 
 
-
-
+        /*SharedPreferences sharedPref = DashboardFragment.this.getParentFragment().getActivity().getSharedPreferences(getString(R.string.rutaPreferences),Context.MODE_PRIVATE);
+        String grupo = sharedPref.getString("grupoActual", "Yo");*/
+        String grupo = MainActivity.getGrupoActual();
 
         createButton = root.findViewById(R.id.createButton);
         createButton.setOnClickListener(v -> {
 
-            SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.rutaPreferences),Context.MODE_PRIVATE);
-            String grupo = sharedPref.getString("grupoActual", "Yo");
+
             FirebaseDatabase database = FirebaseDatabase.getInstance("https://blueaccount-e4707-default-rtdb.europe-west1.firebasedatabase.app");
             DatabaseReference myRef = database.getReference("/Grupos/"+ grupo + "/Cuentas");
 

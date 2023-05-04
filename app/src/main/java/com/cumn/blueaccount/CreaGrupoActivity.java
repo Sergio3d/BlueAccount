@@ -45,6 +45,7 @@ public class CreaGrupoActivity extends AppCompatActivity {
         creaGrupo.setOnClickListener(v ->{
 
             ArrayList<String> newmiembros = new ArrayList<String>(Arrays.asList(textMiembros.getText().toString().split("\\s*[;, \n]\\s*")));
+
             ArrayList<String> miembros = new ArrayList<>();
 
             FirebaseDatabase database = FirebaseDatabase.getInstance("https://blueaccount-e4707-default-rtdb.europe-west1.firebasedatabase.app");
@@ -64,6 +65,8 @@ public class CreaGrupoActivity extends AppCompatActivity {
                     });
 
             FirebaseAuth firebaseauth = FirebaseAuth.getInstance();
+            newmiembros.add(firebaseauth.getCurrentUser().getEmail());
+
             for (String user : newmiembros ) {
                 firebaseauth.fetchSignInMethodsForEmail(user).addOnCompleteListener((OnCompleteListener<SignInMethodQueryResult>) task -> {
                     if (task.isSuccessful()) {
@@ -74,10 +77,11 @@ public class CreaGrupoActivity extends AppCompatActivity {
                         }else if (!miembros.contains(user)){
                             newGrupo.child("Usuarios").push().setValue(user);
                         }
-                        SharedPreferences sharedPref = CreaGrupoActivity.this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
+                        /*SharedPreferences sharedPref = CreaGrupoActivity.this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("grupoActual", nombreGrupo.getText().toString());
-                        editor.apply();
+                        editor.apply();*/
+                        MainActivity.setGrupoActual(nombreGrupo.getText().toString());
                         volverMain();
 
                     } else {

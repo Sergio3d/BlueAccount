@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cumn.blueaccount.MainActivity;
@@ -35,7 +36,7 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        HomeViewModel homeViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(HomeViewModel.class);
+        HomeViewModel homeViewModel = new ViewModelProvider((ViewModelStoreOwner) this, (ViewModelProvider.Factory) new ViewModelProvider.NewInstanceFactory()).get(HomeViewModel.class);
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -45,8 +46,9 @@ public class HomeFragment extends Fragment {
         libroCuentas = new ArrayList<Object>();
 
 
-        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.rutaPreferences),Context.MODE_PRIVATE);
-        String grupo = sharedPref.getString("grupoActual", "Yo");
+        /*SharedPreferences sharedPref = HomeFragment.this.getParentFragment().getActivity().getSharedPreferences(getString(R.string.rutaPreferences),Context.MODE_PRIVATE);
+        String grupo = sharedPref.getString("grupoActual", "Yo");*/
+        String grupo = MainActivity.getGrupoActual();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://blueaccount-e4707-default-rtdb.europe-west1.firebasedatabase.app");
         DatabaseReference misCuentas = database.getReference("/Grupos/"+ grupo + "/Cuentas");

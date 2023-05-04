@@ -51,6 +51,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
+    private static String grupoActual;
+
+    public static String getGrupoActual() {
+        return grupoActual;
+    }
+
+    public static void setGrupoActual(String grupoActual) {
+        MainActivity.grupoActual = grupoActual;
+    }
+
     private static final int RC_SIGN_IN = 2022;
 
     @Override
@@ -70,14 +80,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-        SharedPreferences sharedPref = MainActivity.this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("grupoActual", "Yo");
-        editor.apply();
+
+
+
 
         //AUTH
         findViewById(R.id.logoutButton).setOnClickListener(this);
         mFirebaseAuth = FirebaseAuth.getInstance();
+
+        SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("grupoActual", mFirebaseAuth.getCurrentUser().getDisplayName());
+        editor.apply();
+
+
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -117,30 +133,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     protected void onPause() {
-            super.onPause();
-            mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
-        }
-
-        @Override
-        protected void onResume() {
-            super.onResume();
-            mFirebaseAuth.addAuthStateListener(mAuthStateListener);
-        }
-
-        @Override
-        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-            super.onActivityResult(requestCode, resultCode, data);
-            if (requestCode == RC_SIGN_IN) {
-                if (resultCode == RESULT_OK) {
-                    Toast.makeText(this, R.string.signed_in, Toast.LENGTH_SHORT).show();
-                    Log.i(LOG_TAG, "onActivityResult " + getString(R.string.signed_in));
-                } else if (resultCode == RESULT_CANCELED) {
-                    Toast.makeText(this, R.string.signed_cancelled, Toast.LENGTH_SHORT).show();
-                    Log.i(LOG_TAG, "onActivityResult " + getString(R.string.signed_cancelled));
-                    finish();
-                }
-            }
+        super.onPause();
+        mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("grupoActual", getGrupoActual());
+        editor.apply();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            if (resultCode == RESULT_OK) {
+                Toast.makeText(this, R.string.signed_in, Toast.LENGTH_SHORT).show();
+                Log.i(LOG_TAG, "onActivityResult " + getString(R.string.signed_in));
+            } else if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(this, R.string.signed_cancelled, Toast.LENGTH_SHORT).show();
+                Log.i(LOG_TAG, "onActivityResult " + getString(R.string.signed_cancelled));
+                finish();
+            }
+        }
+    }
+
+
     @Override
     public void onClick(View v) {
         mFirebaseAuth.signOut();
