@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cumn.blueaccount.MainActivity;
 import com.cumn.blueaccount.R;
 import com.cumn.blueaccount.databinding.FragmentHomeBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,6 +32,7 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private TextView cantTotal, nombreGrupo;
     private static float cantidad;
+    private String nameGrupo;
     private ArrayList<Object> libroCuentas;
     private RecyclerView lista;
     //final TransacListAdapter adapter = new TransacListAdapter(this);
@@ -51,9 +54,15 @@ public class HomeFragment extends Fragment {
         String grupo = MainActivity.getGrupoActual();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://blueaccount-e4707-default-rtdb.europe-west1.firebasedatabase.app");
+        DatabaseReference miGrupo = database.getReference("/Grupos/"+ grupo);
         DatabaseReference misCuentas = database.getReference("/Grupos/"+ grupo + "/Cuentas");
 
-        nombreGrupo.setText(grupo);
+        miGrupo.child("NombreGrupo").get().addOnCompleteListener((OnCompleteListener<DataSnapshot>) task ->  {
+            if(!task.isSuccessful()) {
+                nameGrupo = String.valueOf(task.getResult().getValue());
+            }
+        });
+        nombreGrupo.setText(nameGrupo);
 
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
@@ -77,10 +86,6 @@ public class HomeFragment extends Fragment {
 
         //homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
-    }
-
-    public float getCantidad() {
-        return cantidad;
     }
 
     @Override

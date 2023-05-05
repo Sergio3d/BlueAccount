@@ -29,7 +29,7 @@ import java.util.Objects;
 public class CambiarGrupoActivity extends AppCompatActivity {
 
     private ListView listaGrupos;
-    private ArrayList<String> grupos;
+    private ArrayList<String> grupos, rutaGrupos;
     ArrayAdapter<String> adapter;
 
     @Override
@@ -38,6 +38,7 @@ public class CambiarGrupoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cambiagrupo);
         listaGrupos = findViewById(R.id.listaGrupos);
         grupos = new ArrayList<String>();
+        rutaGrupos = new ArrayList<String>();
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         String user = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getEmail();
@@ -48,7 +49,8 @@ public class CambiarGrupoActivity extends AppCompatActivity {
                 for (DataSnapshot child : task.getResult().getChildren()) {
                     for (DataSnapshot member : child.child("Usuarios").getChildren()){
                         if(Objects.requireNonNull(member.getValue()).toString().equals(user)){
-                            grupos.add(Objects.requireNonNull(child.getKey()).toString());
+                            grupos.add(Objects.requireNonNull(child.child("NombreGrupo").getValue().toString()));
+                            rutaGrupos.add(Objects.requireNonNull(child.getKey()));
                         }
                     }
                 }
@@ -63,7 +65,7 @@ public class CambiarGrupoActivity extends AppCompatActivity {
         listaGrupos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String gruposelect = grupos.get(position);
+                String gruposelect = rutaGrupos.get(position);
                 /*SharedPreferences sharedPref = CambiarGrupoActivity.this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString("grupoActual", gruposelect);

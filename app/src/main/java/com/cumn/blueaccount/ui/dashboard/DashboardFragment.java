@@ -29,6 +29,7 @@ import com.cumn.blueaccount.MainActivity;
 import com.cumn.blueaccount.R;
 import com.cumn.blueaccount.databinding.FragmentNuevoBinding;
 import com.cumn.blueaccount.ui.home.HomeFragment;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -70,6 +71,7 @@ public class DashboardFragment extends Fragment {
         createButton.setOnClickListener(v -> {
 
 
+            FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
             FirebaseDatabase database = FirebaseDatabase.getInstance("https://blueaccount-e4707-default-rtdb.europe-west1.firebasedatabase.app");
             DatabaseReference myRef = database.getReference("/Grupos/"+ grupo + "/Cuentas");
 
@@ -94,6 +96,7 @@ public class DashboardFragment extends Fragment {
                 calendar.setTimeInMillis(inputCalendar.getDate());
                 fechaConvertida = dateFormat.format(calendar.getTime());
                 cuenta.child("Fecha").setValue(fechaConvertida);
+                cuenta.child("User").setValue(mFirebaseAuth.getCurrentUser().getDisplayName());
 
                 Toast toast = Toast.makeText(this.getContext(), "Cuenta Nueva", Toast.LENGTH_LONG);
                 toast.show();

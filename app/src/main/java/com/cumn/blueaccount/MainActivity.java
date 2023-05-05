@@ -80,19 +80,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-
-
+        if(grupoActual==null) {
+            SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
+            MainActivity.setGrupoActual(sharedPref.getString("grupoActual", "Prueba"));
+        }
 
 
         //AUTH
         findViewById(R.id.logoutButton).setOnClickListener(this);
         mFirebaseAuth = FirebaseAuth.getInstance();
-
-        SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("grupoActual", mFirebaseAuth.getCurrentUser().getDisplayName());
-        editor.apply();
-
 
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
