@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.cumn.blueaccount.ui.home.HomeFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -24,6 +25,7 @@ import com.cumn.blueaccount.databinding.ActivityMainBinding;
 import java.util.Arrays;
 
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -82,8 +84,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if(grupoActual==null) {
             SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
-            MainActivity.setGrupoActual(sharedPref.getString("grupoActual", "Prueba"));
+            String inicioGrupo = sharedPref.getString("grupoActual", "Prueba");
+            String nombreGrupo = sharedPref.getString("nombreGrupo", "Prueba");
+            MainActivity.setGrupoActual(inicioGrupo);
+            HomeFragment.setNameGrupo(nombreGrupo);
+            Toast toast = Toast.makeText(this.getBaseContext(), inicioGrupo, Toast.LENGTH_LONG);
+            toast.show();
         }
+
 
 
         //AUTH
@@ -127,10 +135,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(binding.getRoot());
     }
 
-
+    @Override
     protected void onPause() {
         super.onPause();
         mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
+        SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("grupoActual", getGrupoActual());
+        editor.putString("nombreGrupo", HomeFragment.getNameGrupo());
+        editor.apply();
     }
 
     @Override
@@ -140,11 +153,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStop() {
+        super.onStop();
         SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("grupoActual", getGrupoActual());
+        editor.putString("nombreGrupo", HomeFragment.getNameGrupo());
         editor.apply();
     }
 

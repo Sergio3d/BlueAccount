@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cumn.blueaccount.ui.home.HomeFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -77,6 +78,7 @@ public class CreaGrupoActivity extends AppCompatActivity {
                             editor.putString("grupoActual", nombreGrupo.getText().toString());
                             editor.apply();*/
                             MainActivity.setGrupoActual(newGrupo.getKey());
+                            HomeFragment.setNameGrupo(nGrupo);
                             volverMain();
 
                         } else {

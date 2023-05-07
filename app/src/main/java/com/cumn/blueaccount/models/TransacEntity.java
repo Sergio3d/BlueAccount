@@ -8,35 +8,21 @@ import java.util.Date;
 public class TransacEntity {
     static public final String TABLA = "usuarios";
 
-    @PrimaryKey()
-    protected Date IDFECHA;
-
-    protected Boolean GAS_ING;
     protected String DESCRIP;
-    protected String ETIQUETA;
-    protected Float CANTIDAD;
-    protected Date FECHA;
+    protected String CANTIDAD;
+    protected String FECHA;
+    protected String USER;
 
-    public TransacEntity(String nombre, String password, float rol, String IDFECHA, Boolean GAS_ING, String DESCRIP, String ETIQUETA, Float CANTIDAD, Date FECHA) {
-        this.IDFECHA = new Date();
-        this.GAS_ING = GAS_ING;
+    public TransacEntity(String DESCRIP, String CANTIDAD, String FECHA, String USER) {
         this.DESCRIP = DESCRIP;
-        this.ETIQUETA = ETIQUETA;
         this.CANTIDAD = CANTIDAD;
         this.FECHA = FECHA;
+        this.USER = USER;
     }
 
-    public Date getIDFECHA() {
-        return IDFECHA;
-    }
+    public String getUSER() { return USER; }
 
-    public Boolean getGAS_ING() {
-        return GAS_ING;
-    }
-
-    public void setGAS_ING(Boolean GAS_ING) {
-        this.GAS_ING = GAS_ING;
-    }
+    public void setUSER(String USER) { this.USER = USER; }
 
     public String getDESCRIP() {
         return DESCRIP;
@@ -46,27 +32,19 @@ public class TransacEntity {
         this.DESCRIP = DESCRIP;
     }
 
-    public String getETIQUETA() {
-        return ETIQUETA;
-    }
-
-    public void setETIQUETA(String ETIQUETA) {
-        this.ETIQUETA = ETIQUETA;
-    }
-
-    public Float getCANTIDAD() {
+    public String getCANTIDAD() {
         return CANTIDAD;
     }
 
-    public void setCANTIDAD(Float CANTIDAD) {
+    public void setCANTIDAD(String CANTIDAD) {
         this.CANTIDAD = CANTIDAD;
     }
 
-    public Date getFECHA() {
+    public String getFECHA() {
         return FECHA;
     }
 
-    public void setFECHA(Date FECHA) {
+    public void setFECHA(String FECHA) {
         this.FECHA = FECHA;
     }
 }

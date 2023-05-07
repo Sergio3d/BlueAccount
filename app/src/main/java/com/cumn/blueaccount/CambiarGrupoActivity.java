@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cumn.blueaccount.ui.home.HomeFragment;
 import com.firebase.ui.auth.viewmodel.AuthViewModelBase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -66,11 +67,13 @@ public class CambiarGrupoActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String gruposelect = rutaGrupos.get(position);
+                String nombre = grupos.get(position);
                 /*SharedPreferences sharedPref = CambiarGrupoActivity.this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString("grupoActual", gruposelect);
                 editor.apply();*/
                 MainActivity.setGrupoActual(gruposelect);
+                HomeFragment.setNameGrupo(nombre);
                 //Toast toast = Toast.makeText(CambiarGrupoActivity.this.getBaseContext(), getString(R.string.grupoActual), Toast.LENGTH_LONG);
                 //toast.show();
                 Intent cambiagrupo = new Intent(CambiarGrupoActivity.this.getBaseContext(), MainActivity.class);
