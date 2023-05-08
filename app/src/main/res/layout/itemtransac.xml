@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="123,45"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -21,9 +20,10 @@
         android:id="@+id/textDesc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
         android:text="TextView"
+        android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/textCantItem"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,10 +31,10 @@
         android:id="@+id/textFechaItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="24dp"
+        android:layout_marginEnd="15dp"
         android:text="TextView"
-        app:layout_constraintStart_toEndOf="@+id/textDesc"
+        app:layout_constraintEnd_toStartOf="@+id/buttonBorrarItem"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
@@ -48,4 +48,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:text="TextView"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/textCantItem"
+        app:layout_constraintTop_toBottomOf="@+id/textDesc" />
 </androidx.constraintlayout.widget.ConstraintLayout>

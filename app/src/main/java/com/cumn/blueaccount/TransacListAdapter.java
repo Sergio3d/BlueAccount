@@ -46,7 +46,6 @@ public class TransacListAdapter extends RecyclerView.Adapter<TransacListAdapter.
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         TransacEntity current = listaItems.get(position);
         holder.cantidad.setText(current.getCANTIDAD().toString());
-        holder.etiqueta.setText(current.getETIQUETA());
         holder.fecha.setText((CharSequence) current.getFECHA());
 
     }

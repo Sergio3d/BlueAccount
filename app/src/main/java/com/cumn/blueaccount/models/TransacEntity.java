@@ -8,17 +8,25 @@ import java.util.Date;
 public class TransacEntity {
     static public final String TABLA = "usuarios";
 
-    protected String DESCRIP;
-    protected String CANTIDAD;
-    protected String FECHA;
-    protected String USER;
+    private String DESCRIP;
+    private String CANTIDAD;
+    private String FECHA;
+    private String USER;
 
-    public TransacEntity(String DESCRIP, String CANTIDAD, String FECHA, String USER) {
+
+    private String ID;
+
+    public TransacEntity(String ID,String DESCRIP, String CANTIDAD, String FECHA, String USER) {
+        this.ID = ID;
         this.DESCRIP = DESCRIP;
         this.CANTIDAD = CANTIDAD;
         this.FECHA = FECHA;
         this.USER = USER;
     }
+
+    public String getID() {return ID;}
+
+    public void setID(String ID) {this.ID = ID;}
 
     public String getUSER() { return USER; }
 

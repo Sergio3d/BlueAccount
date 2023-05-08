@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cumn.blueaccount.MainActivity;
@@ -81,14 +82,20 @@ public class HomeFragment extends Fragment {
                 cantidad = 0;
                 ArrayList<TransacEntity> listTransac = new ArrayList<TransacEntity>();
                 for (DataSnapshot child : snapshot.getChildren()) {
-                    if (child.child("Mov").getValue() != null){
+                    if (child.getValue() != null){
                         libroCuentas.add(child.child("Mov").getValue());
                         cantidad = cantidad + Float.parseFloat(Objects.requireNonNull(child.child("Mov").getValue()).toString());
-                        TransacEntity newTransac = new TransacEntity(child.child("Desc").getValue().toString(),child.child("Mov").getValue().toString(),child.child("Fecha").getValue().toString(),child.child("User").getValue().toString());
+                        TransacEntity newTransac = new TransacEntity(child.getKey() ,
+                                Objects.requireNonNull(child.child("Desc").getValue()).toString(),
+                                Objects.requireNonNull(child.child("Mov").getValue()).toString(),
+                                Objects.requireNonNull(child.child("Fecha").getValue()).toString(),
+                                Objects.requireNonNull(child.child("User").getValue()).toString());
                         listTransac.add(newTransac);
                     }
                 }
-                TransacAdapter adapter = new ArrayAdapter<TransacEntity>(HomeFragment.this.getContext(), android.R.layout.simple_list_item_1, listTransac);
+                LinearLayoutManager layoutManager = new LinearLayoutManager(HomeFragment.this.getContext());
+                TransacAdapter adapter = new TransacAdapter(listTransac);
+                lista.setLayoutManager(layoutManager);
                 lista.setAdapter(adapter);
                 cantTotal.setText(String.valueOf(cantidad));
             }
