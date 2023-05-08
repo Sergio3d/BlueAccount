@@ -28,6 +28,7 @@ import androidx.lifecycle.ViewModelStoreOwner;
 import com.cumn.blueaccount.MainActivity;
 import com.cumn.blueaccount.R;
 import com.cumn.blueaccount.databinding.FragmentNuevoBinding;
+import com.cumn.blueaccount.models.TransacEntity;
 import com.cumn.blueaccount.ui.home.HomeFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -38,6 +39,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class DashboardFragment extends Fragment {
@@ -86,17 +89,21 @@ public class DashboardFragment extends Fragment {
                 String fechaConvertida = null;
 
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-                // Write a message to the database
-                DatabaseReference cuenta = myRef.push();
-
-                cuenta.child("Mov").setValue(cantidad);
-                cuenta.child("Desc").setValue(inputDescripcion.getText().toString());
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(inputCalendar.getDate());
                 fechaConvertida = dateFormat.format(calendar.getTime());
+                // Write a message to the database
+                HashMap nuevaCuenta = new HashMap();
+                nuevaCuenta.put("Desc",inputDescripcion.getText().toString());
+                nuevaCuenta.put("Mov",cantidad);
+                nuevaCuenta.put("Fecha",fechaConvertida);
+                nuevaCuenta.put("User",mFirebaseAuth.getCurrentUser().getDisplayName());
+                DatabaseReference cuenta = myRef.push();
+                cuenta.setValue(nuevaCuenta);
+                /*cuenta.child("Desc").setValue(inputDescripcion.getText().toString());
+                cuenta.child("Mov").setValue(cantidad);
                 cuenta.child("Fecha").setValue(fechaConvertida);
-                cuenta.child("User").setValue(mFirebaseAuth.getCurrentUser().getDisplayName());
+                cuenta.child("User").setValue(mFirebaseAuth.getCurrentUser().getDisplayName());*/
 
                 Toast toast = Toast.makeText(this.getContext(), "Cuenta Nueva", Toast.LENGTH_LONG);
                 toast.show();

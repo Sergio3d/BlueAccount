@@ -24,6 +24,13 @@ public class TransacEntity {
         this.USER = USER;
     }
 
+    public TransacEntity(String DESCRIP, String CANTIDAD, String FECHA, String USER) {
+        this.DESCRIP = DESCRIP;
+        this.CANTIDAD = CANTIDAD;
+        this.FECHA = FECHA;
+        this.USER = USER;
+    }
+
     public String getID() {return ID;}
 
     public void setID(String ID) {this.ID = ID;}

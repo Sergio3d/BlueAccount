@@ -1,18 +1,13 @@
 package com.cumn.blueaccount;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.cumn.blueaccount.ui.home.HomeFragment;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import androidx.activity.result.ActivityResult;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.navigation.NavController;
@@ -25,11 +20,7 @@ import com.cumn.blueaccount.databinding.ActivityMainBinding;
 import java.util.Arrays;
 
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import androidx.annotation.NonNull;
 
@@ -37,11 +28,8 @@ import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.BuildConfig;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -82,13 +70,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-        if(grupoActual==null) {
-            SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
-            String inicioGrupo = sharedPref.getString("grupoActual", "Prueba");
-            MainActivity.setGrupoActual(inicioGrupo);
-        }
-
-
 
         //AUTH
         findViewById(R.id.logoutButton).setOnClickListener(this);
@@ -127,6 +108,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         };
+
+        if(grupoActual==null) {
+            SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
+            String inicioGrupo = sharedPref.getString("grupoActual", null);
+            if(inicioGrupo == null){
+                FirebaseUser myUser = mFirebaseAuth.getCurrentUser();
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance("https://blueaccount-e4707-default-rtdb.europe-west1.firebasedatabase.app");
+                DatabaseReference newGrupo = database.getReference("/Grupos/").push();
+                newGrupo.child("NombreGrupo").setValue(myUser.getDisplayName());
+                newGrupo.child("Usuarios").push().setValue(myUser.getEmail());
+                inicioGrupo = newGrupo.getKey();
+
+                sharedPref = this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("grupoActual", inicioGrupo);
+                editor.apply();
+
+            }
+            MainActivity.setGrupoActual(inicioGrupo);
+        }
 
         setContentView(binding.getRoot());
     }
