@@ -85,11 +85,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(grupoActual==null) {
             SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
             String inicioGrupo = sharedPref.getString("grupoActual", "Prueba");
-            String nombreGrupo = sharedPref.getString("nombreGrupo", "Prueba");
             MainActivity.setGrupoActual(inicioGrupo);
-            HomeFragment.setNameGrupo(nombreGrupo);
-            Toast toast = Toast.makeText(this.getBaseContext(), inicioGrupo, Toast.LENGTH_LONG);
-            toast.show();
         }
 
 
@@ -142,7 +138,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("grupoActual", getGrupoActual());
-        editor.putString("nombreGrupo", HomeFragment.getNameGrupo());
         editor.apply();
     }
 
@@ -158,7 +153,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("grupoActual", getGrupoActual());
-        editor.putString("nombreGrupo", HomeFragment.getNameGrupo());
         editor.apply();
     }
 

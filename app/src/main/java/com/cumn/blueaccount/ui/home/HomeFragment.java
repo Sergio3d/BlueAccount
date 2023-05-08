@@ -36,16 +36,6 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private TextView cantTotal, nombreGrupo;
     private static float cantidad;
-
-    public static void setNameGrupo(String nGrupo) {
-        nameGrupo = nGrupo;
-    }
-
-    public static String getNameGrupo() {
-        return nameGrupo;
-    }
-
-    private static String nameGrupo;
     private ArrayList<Object> libroCuentas;
     private RecyclerView lista;
 
@@ -67,21 +57,22 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        nombreGrupo.setText(nameGrupo);
+        //nombreGrupo.setText(nameGrupo);
 
         /*SharedPreferences sharedPref = HomeFragment.this.getParentFragment().getActivity().getSharedPreferences(getString(R.string.rutaPreferences),Context.MODE_PRIVATE);
         String grupo = sharedPref.getString("grupoActual", "Yo");*/
         String grupo = MainActivity.getGrupoActual();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://blueaccount-e4707-default-rtdb.europe-west1.firebasedatabase.app");
-        DatabaseReference misCuentas = database.getReference("/Grupos/"+ grupo + "/Cuentas");
+        DatabaseReference misCuentas = database.getReference("/Grupos/"+ grupo );
+
 
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 cantidad = 0;
                 ArrayList<TransacEntity> listTransac = new ArrayList<TransacEntity>();
-                for (DataSnapshot child : snapshot.getChildren()) {
+                for (DataSnapshot child : snapshot.child("Cuentas").getChildren()) {
                     if (child.getValue() != null){
                         libroCuentas.add(child.child("Mov").getValue());
                         cantidad = cantidad + Float.parseFloat(Objects.requireNonNull(child.child("Mov").getValue()).toString());
@@ -98,6 +89,7 @@ public class HomeFragment extends Fragment {
                 lista.setLayoutManager(layoutManager);
                 lista.setAdapter(adapter);
                 cantTotal.setText(String.valueOf(cantidad));
+                nombreGrupo.setText(snapshot.child("NombreGrupo").getValue().toString());
             }
 
             @Override
@@ -105,7 +97,7 @@ public class HomeFragment extends Fragment {
 
             }
         };
-        misCuentas.addListenerForSingleValueEvent(eventListener);
+        misCuentas.addValueEventListener(eventListener);
 
     }
 

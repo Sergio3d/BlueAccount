@@ -73,7 +73,6 @@ public class CambiarGrupoActivity extends AppCompatActivity {
                 editor.putString("grupoActual", gruposelect);
                 editor.apply();*/
                 MainActivity.setGrupoActual(gruposelect);
-                HomeFragment.setNameGrupo(nombre);
                 //Toast toast = Toast.makeText(CambiarGrupoActivity.this.getBaseContext(), getString(R.string.grupoActual), Toast.LENGTH_LONG);
                 //toast.show();
                 Intent cambiagrupo = new Intent(CambiarGrupoActivity.this.getBaseContext(), MainActivity.class);

@@ -78,7 +78,6 @@ public class CreaGrupoActivity extends AppCompatActivity {
                             editor.putString("grupoActual", nombreGrupo.getText().toString());
                             editor.apply();*/
                             MainActivity.setGrupoActual(newGrupo.getKey());
-                            HomeFragment.setNameGrupo(nGrupo);
                             volverMain();
 
                         } else {
