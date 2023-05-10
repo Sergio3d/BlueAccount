@@ -50,7 +50,11 @@ public class CambiarGrupoActivity extends AppCompatActivity {
                 for (DataSnapshot child : task.getResult().getChildren()) {
                     for (DataSnapshot member : child.child("Usuarios").getChildren()){
                         if(Objects.requireNonNull(member.getValue()).toString().equals(user)){
-                            grupos.add(Objects.requireNonNull(child.child("NombreGrupo").getValue().toString()));
+                            String grupo = child.child("NombreGrupo").getValue().toString();
+                            if(child.getKey().equals(MainActivity.getGrupoActual())){
+                                grupo = grupo + " \uD83D\uDD39";
+                            }
+                            grupos.add(Objects.requireNonNull(grupo));
                             rutaGrupos.add(Objects.requireNonNull(child.getKey()));
                         }
                     }

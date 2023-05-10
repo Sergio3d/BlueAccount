@@ -57,11 +57,15 @@ public class NotificationsFragment extends Fragment {
             FirebaseDatabase database = FirebaseDatabase.getInstance("https://blueaccount-e4707-default-rtdb.europe-west1.firebasedatabase.app");
             DatabaseReference myRef = database.getReference("/Grupos/"+ grupo + "/Usuarios/" );
             myRef.get().addOnCompleteListener( task ->{
-                DatabaseReference delUser;
-                for ( DataSnapshot child : task.getResult().getChildren()) {
-                    if(child.getValue().equals(user)){
-                        delUser = child.getRef();
-                        delUser.removeValue();
+                if(task.getResult().getChildrenCount()<=1){
+                    Objects.requireNonNull(myRef.getParent()).removeValue();
+                }else {
+                    DatabaseReference delUser;
+                    for (DataSnapshot child : task.getResult().getChildren()) {
+                        if (child.getValue().equals(user)) {
+                            delUser = child.getRef();
+                            delUser.removeValue();
+                        }
                     }
                 }
             });
