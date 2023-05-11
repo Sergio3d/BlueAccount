@@ -25,6 +25,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
+import com.cumn.blueaccount.CambiarGrupoActivity;
 import com.cumn.blueaccount.MainActivity;
 import com.cumn.blueaccount.R;
 import com.cumn.blueaccount.databinding.FragmentNuevoBinding;
@@ -107,6 +108,8 @@ public class DashboardFragment extends Fragment {
 
                 Toast toast = Toast.makeText(this.getContext(), "Cuenta Nueva", Toast.LENGTH_LONG);
                 toast.show();
+                Intent cambiagrupo = new Intent(DashboardFragment.this.getContext(), MainActivity.class);
+                startActivity(cambiagrupo);
             }
         });
 
