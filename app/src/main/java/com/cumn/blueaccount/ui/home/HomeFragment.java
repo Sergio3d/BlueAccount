@@ -90,7 +90,9 @@ public class HomeFragment extends Fragment {
                 lista.setLayoutManager(layoutManager);
                 lista.setAdapter(adapter);
                 cantTotal.setText(String.valueOf(cantidad * Seleccionado.GlobalVariables.getValor()));
-                nombreGrupo.setText(snapshot.child("NombreGrupo").getValue().toString());
+                if(snapshot.child("NombreGrupo").getValue()!=null) {
+                    nombreGrupo.setText(snapshot.child("NombreGrupo").getValue().toString());
+                }
             }
 
             @Override
