@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cumn.blueaccount.MainActivity;
 import com.cumn.blueaccount.R;
+import com.cumn.blueaccount.Seleccionado;
 import com.cumn.blueaccount.databinding.FragmentHomeBinding;
 import com.cumn.blueaccount.models.TransacAdapter;
 import com.cumn.blueaccount.models.TransacEntity;
@@ -88,7 +89,7 @@ public class HomeFragment extends Fragment {
                 TransacAdapter adapter = new TransacAdapter(listTransac);
                 lista.setLayoutManager(layoutManager);
                 lista.setAdapter(adapter);
-                cantTotal.setText(String.valueOf(cantidad));
+                cantTotal.setText(String.valueOf(cantidad * Seleccionado.GlobalVariables.getValor()));
                 nombreGrupo.setText(snapshot.child("NombreGrupo").getValue().toString());
             }
 

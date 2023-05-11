@@ -11,5 +11,7 @@
     <string name="android_sdk_places_api_key">AIzaSyCrzpnvGlX6jo9w03s-j8LuMZsUWsAWLzo</string>
     <string name="rutaPreferences">com.cumn.blueaccount.PREFERENCE_FILE_KEY</string>
     <string name="select">Select Item</string>
+    <string name="title_activity_cambio_divisas">CambioDivisas</string>
+    <string name="title_activity_cambiar_divisas">Cambiar_Divisas</string>
 
 </resources>
