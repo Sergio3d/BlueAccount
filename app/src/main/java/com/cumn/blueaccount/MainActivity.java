@@ -90,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     CharSequence username = user.getDisplayName();
                     Toast.makeText(MainActivity.this, getString(R.string.firebase_user_fmt, username), Toast.LENGTH_LONG).show();
                     Log.i(LOG_TAG, "onAuthStateChanged() " + getString(R.string.firebase_user_fmt, username));
+                    CrearGrupoInicio();
 
                 } else {
                     // user is signed out
@@ -106,7 +107,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                             build(),
                             RC_SIGN_IN
                     );
-
                     //Remains logged in when unique gmail account
                     // setIsSmartLockEnabled(!BuildConfig.DEBUG /* credentials */, true /* hints */).
                     //setIsSmartLockEnabled(BuildConfig.DEBUG /* credentials */, true /* hints */).
@@ -114,27 +114,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         };
-
-        if(grupoActual==null) {
-            SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
-            String inicioGrupo = sharedPref.getString("grupoActual", null);
-            if(inicioGrupo == null){
-                FirebaseUser myUser = mFirebaseAuth.getCurrentUser();
-
-                FirebaseDatabase database = FirebaseDatabase.getInstance("https://blueaccount-e4707-default-rtdb.europe-west1.firebasedatabase.app");
-                DatabaseReference newGrupo = database.getReference("/Grupos/").push();
-                newGrupo.child("NombreGrupo").setValue(myUser.getDisplayName());
-                newGrupo.child("Usuarios").push().setValue(myUser.getEmail());
-                inicioGrupo = newGrupo.getKey();
-
-                sharedPref = this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString("grupoActual", inicioGrupo);
-                editor.apply();
-
-            }
-            MainActivity.setGrupoActual(inicioGrupo);
-        }
 
         //boton cambio de activity
         boton = findViewById(R.id.Moneda);
@@ -155,6 +134,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(binding.getRoot());
 
 
+    }
+
+    private void CrearGrupoInicio() {
+        if(grupoActual==null & mFirebaseAuth.getCurrentUser()!=null) {
+            SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
+            String inicioGrupo = sharedPref.getString("grupoActual", null);
+            if(inicioGrupo == null){
+                FirebaseUser myUser = mFirebaseAuth.getCurrentUser();
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance("https://blueaccount-e4707-default-rtdb.europe-west1.firebasedatabase.app");
+                DatabaseReference newGrupo = database.getReference("/Grupos/").push();
+                newGrupo.child("NombreGrupo").setValue(myUser.getDisplayName());
+                newGrupo.child("Usuarios").push().setValue(myUser.getEmail());
+                inicioGrupo = newGrupo.getKey();
+
+                sharedPref = this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("grupoActual", inicioGrupo);
+                editor.apply();
+
+            }
+            MainActivity.setGrupoActual(inicioGrupo);
+        }
     }
 
     @Override
