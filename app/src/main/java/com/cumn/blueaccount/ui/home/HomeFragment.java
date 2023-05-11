@@ -81,7 +81,7 @@ public class HomeFragment extends Fragment {
                                 Objects.requireNonNull(child.child("Mov").getValue()).toString(),
                                 Objects.requireNonNull(child.child("Fecha").getValue()).toString(),
                                 Objects.requireNonNull(child.child("User").getValue()).toString());
-                        listTransac.add(newTransac);
+                        listTransac.add(0,newTransac);
                     }
                 }
                 LinearLayoutManager layoutManager = new LinearLayoutManager(HomeFragment.this.getContext());
