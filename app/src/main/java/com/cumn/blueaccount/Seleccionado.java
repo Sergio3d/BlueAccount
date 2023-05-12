@@ -3,6 +3,7 @@ package com.cumn.blueaccount;
 
 public class Seleccionado {
     public static class GlobalVariables {
+
         public static String myString;
         public static float valor=1;
 
@@ -12,6 +13,11 @@ public class Seleccionado {
             }
             valor = Float.parseFloat(myString.substring(myString.indexOf(":") + 1));
             return valor;
+        }
+
+
+        public static String getMyString() {
+            return myString;
         }
 
         public static void setValor(float valor) {
