@@ -120,10 +120,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             RC_SIGN_IN
 
                     );
-                    /*SharedPreferences sharedPref = MainActivity.this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString("grupoActual", null);
-                    editor.apply();*/
                     //Remains logged in when unique gmail account
                     // setIsSmartLockEnabled(!BuildConfig.DEBUG /* credentials */, true /* hints */).
                     //setIsSmartLockEnabled(BuildConfig.DEBUG /* credentials */, true /* hints */).
