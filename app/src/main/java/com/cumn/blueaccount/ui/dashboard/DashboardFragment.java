@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -51,6 +52,7 @@ public class DashboardFragment extends Fragment {
     private Button createButton;
     private CalendarView inputCalendar;
     private EditText inputCantidad, inputFecha, inputDescripcion;
+    private String fecha;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         DashboardViewModel dashboardViewModel = new ViewModelProvider((ViewModelStoreOwner) this, (ViewModelProvider.Factory) new ViewModelProvider.NewInstanceFactory()).get(DashboardViewModel.class);
@@ -66,7 +68,16 @@ public class DashboardFragment extends Fragment {
         inputCalendar = root.findViewById(R.id.calendarView);
         inputDescripcion = root.findViewById(R.id.inputDescripcion);
 
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        fecha = dateFormat.format(calendar.getTimeInMillis());
 
+        inputCalendar.setOnDateChangeListener( new CalendarView.OnDateChangeListener() {
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                month=month+1;
+                DashboardFragment.this.fecha = year+"-"+month+"-"+dayOfMonth;
+            }//met
+        });
         /*SharedPreferences sharedPref = DashboardFragment.this.getParentFragment().getActivity().getSharedPreferences(getString(R.string.rutaPreferences),Context.MODE_PRIVATE);
         String grupo = sharedPref.getString("grupoActual", "Yo");*/
         String grupo = MainActivity.getGrupoActual();
@@ -87,17 +98,10 @@ public class DashboardFragment extends Fragment {
                     cantidad = Float.parseFloat(inputCantidad.getText().toString().replace(",", "."));
                 }
 
-                String fechaConvertida = null;
-
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(inputCalendar.getDate());
-                fechaConvertida = dateFormat.format(calendar.getTime());
-                // Write a message to the database
                 HashMap nuevaCuenta = new HashMap();
                 nuevaCuenta.put("Desc",inputDescripcion.getText().toString());
                 nuevaCuenta.put("Mov",cantidad);
-                nuevaCuenta.put("Fecha",fechaConvertida);
+                nuevaCuenta.put("Fecha",fecha);
                 nuevaCuenta.put("User",mFirebaseAuth.getCurrentUser().getDisplayName());
                 DatabaseReference cuenta = myRef.push();
                 cuenta.setValue(nuevaCuenta);
