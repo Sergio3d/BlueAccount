@@ -144,17 +144,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(i);
         });
         //Mostrar divisa
-        Seleccionado.GlobalVariables.setValor(2);
-        Seleccionado.GlobalVariables.setMyString("\"EUR\":1");
-
         float numero=Seleccionado.GlobalVariables.getValor();
-        texto.setText(String.valueOf(numero));
+        String result = Seleccionado.GlobalVariables.myString.substring(0, Seleccionado.GlobalVariables.myString.indexOf(":")); // Obtiene la subcadena desde el inicio hasta ":"
 
-
-
+        texto.setText(result);
         setContentView(binding.getRoot());
-
-
     }
 
     @Override

@@ -3,8 +3,8 @@ package com.cumn.blueaccount;
 
 public class Seleccionado {
     public static class GlobalVariables {
-        public static String myString;
-        public static float valor=1;
+        public static String myString="\"EUR\":1";
+        public static float valor;
 
         public static float getValor() {
             if (myString == null) {

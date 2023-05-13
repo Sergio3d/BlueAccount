@@ -22,11 +22,6 @@ public class Cambio_Divisas extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cambio_divisas);
-
-        Seleccionado.GlobalVariables.setValor(1);
-        Seleccionado.GlobalVariables.setMyString("\"EUR\":1");
-
-
         Button btnActivity2 = findViewById(R.id.Cambiar);
         btnActivity2.setOnClickListener(new View.OnClickListener() {
             @Override
