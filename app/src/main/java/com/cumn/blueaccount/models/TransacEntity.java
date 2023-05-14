@@ -2,6 +2,8 @@ package com.cumn.blueaccount.models;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.cumn.blueaccount.Seleccionado;
+
 import java.util.Date;
 
 @Entity(tableName = TransacEntity.TABLA)
@@ -10,18 +12,18 @@ public class TransacEntity {
 
     private String DESCRIP;
     private String CANTIDAD;
+    private float aux;
     private String FECHA;
     private String USER;
-
-
     private String ID;
 
-    public TransacEntity(String ID,String DESCRIP, String CANTIDAD, String FECHA, String USER) {
+    public TransacEntity(String ID, String DESCRIP, String CANTIDAD, String FECHA, String USER) {
         this.ID = ID;
         this.DESCRIP = DESCRIP;
         this.CANTIDAD = CANTIDAD;
         this.FECHA = FECHA;
         this.USER = USER;
+        this.aux = calculateAux();
     }
 
     public TransacEntity(String DESCRIP, String CANTIDAD, String FECHA, String USER) {
@@ -29,15 +31,32 @@ public class TransacEntity {
         this.CANTIDAD = CANTIDAD;
         this.FECHA = FECHA;
         this.USER = USER;
+        this.aux = calculateAux();
     }
 
-    public String getID() {return ID;}
+    private float calculateAux() {
+        if (CANTIDAD != null) {
+            return Float.parseFloat(CANTIDAD) * Seleccionado.GlobalVariables.getValor();
+        } else {
+            return 0;
+        }
+    }
 
-    public void setID(String ID) {this.ID = ID;}
+    public String getID() {
+        return ID;
+    }
 
-    public String getUSER() { return USER; }
+    public void setID(String ID) {
+        this.ID = ID;
+    }
 
-    public void setUSER(String USER) { this.USER = USER; }
+    public String getUSER() {
+        return USER;
+    }
+
+    public void setUSER(String USER) {
+        this.USER = USER;
+    }
 
     public String getDESCRIP() {
         return DESCRIP;
@@ -48,11 +67,12 @@ public class TransacEntity {
     }
 
     public String getCANTIDAD() {
-        return CANTIDAD;
+        return Float.toString(aux);
     }
 
     public void setCANTIDAD(String CANTIDAD) {
         this.CANTIDAD = CANTIDAD;
+        this.aux = calculateAux();
     }
 
     public String getFECHA() {
