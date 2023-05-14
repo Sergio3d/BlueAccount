@@ -28,6 +28,7 @@ import androidx.lifecycle.ViewModelStoreOwner;
 import com.cumn.blueaccount.CambiarGrupoActivity;
 import com.cumn.blueaccount.MainActivity;
 import com.cumn.blueaccount.R;
+import com.cumn.blueaccount.Seleccionado;
 import com.cumn.blueaccount.databinding.FragmentNuevoBinding;
 import com.cumn.blueaccount.models.TransacEntity;
 import com.cumn.blueaccount.ui.home.HomeFragment;
@@ -93,9 +94,9 @@ public class DashboardFragment extends Fragment {
             float cantidad;
             if ((!TextUtils.isEmpty(GastoButton.getText()) || !TextUtils.isEmpty(IngresoButton.getText())) && !TextUtils.isEmpty(inputCantidad.getText())) {
                 if (GastoButton.isChecked()) {
-                    cantidad = 0 - Float.parseFloat(inputCantidad.getText().toString().replace(",", "."));
+                    cantidad =(0 - Float.parseFloat(inputCantidad.getText().toString().replace(",", "."))/ Seleccionado.GlobalVariables.getValor());
                 } else {
-                    cantidad = Float.parseFloat(inputCantidad.getText().toString().replace(",", "."));
+                    cantidad =(Float.parseFloat(inputCantidad.getText().toString().replace(",", "."))/ Seleccionado.GlobalVariables.getValor());
                 }
 
                 HashMap nuevaCuenta = new HashMap();
