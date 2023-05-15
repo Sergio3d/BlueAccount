@@ -58,8 +58,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private static final int RC_SIGN_IN = 2022;
 
-    private TextView texto;
-    private Button boton;
     private String inicioGrupo;
 
     @SuppressLint("MissingInflatedId")
@@ -85,6 +83,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.logoutButton).setOnClickListener(this);
         mFirebaseAuth = FirebaseAuth.getInstance();
 
+        FirebaseUser user = Objects.requireNonNull(mFirebaseAuth.getCurrentUser());
+        if(grupoActual==null) {
+            SharedPreferences sharedPref = MainActivity.this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
+            grupoActual = sharedPref.getString("grupoActual", null);
+            if(grupoActual==null) {
+                BuscarGrupoInicial(user, sharedPref);
+            }
+        }
 
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -95,8 +101,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     CharSequence username = user.getDisplayName();
                     Toast.makeText(MainActivity.this, getString(R.string.firebase_user_fmt, username), Toast.LENGTH_LONG).show();
                     Log.i(LOG_TAG, "onAuthStateChanged() " + getString(R.string.firebase_user_fmt, username));
-
-                    user = Objects.requireNonNull(mFirebaseAuth.getCurrentUser());
                     if(grupoActual==null) {
                         SharedPreferences sharedPref = MainActivity.this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
                         grupoActual = sharedPref.getString("grupoActual", null);
@@ -128,18 +132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         };
 
-        //boton cambio de activity
-        boton = findViewById(R.id.Moneda);
-        texto= findViewById(R.id.TextoMoneda);
-        boton.setOnClickListener(v ->{
-            Intent i = new Intent(MainActivity.this.getBaseContext(), Cambio_Divisas.class);
-            startActivity(i);
-        });
 
-        //Mostrar divisa
-        float numero=Seleccionado.GlobalVariables.getValor();
-        String result = Seleccionado.GlobalVariables.myString.substring(0, Seleccionado.GlobalVariables.myString.indexOf(":")); // Obtiene la subcadena desde el inicio hasta ":"
-        texto.setText(result);
         setContentView(binding.getRoot());
     }
 
@@ -150,22 +143,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         myRef.get().addOnCompleteListener((OnCompleteListener<DataSnapshot>) task -> {
             for (DataSnapshot child : task.getResult().getChildren()) {
                 if (child.child("NombreGrupo").getValue().toString().equals(user.getDisplayName())) {
-                    if (child.child("Usarios").getChildrenCount() == 1 && child.child("Usarios").getValue().toString().contains(user.getEmail())) {
-                        grupoActual = child.getKey();
-
+                    for (DataSnapshot member : child.child("Usuarios").getChildren()) {
+                        if (member.getValue().toString().equals(user.getEmail())) {
+                            grupoActual = child.getKey();
+                        }
                     }
                 }
             }
+            if(grupoActual==null){
+                DatabaseReference newgrupo = myRef.push();
+                newgrupo.child("NombreGrupo").setValue(user.getDisplayName());
+                newgrupo.child("Usuarios").push().setValue(user.getEmail());
+                grupoActual = newgrupo.getKey();
+            }
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("grupoActual", grupoActual);
+            editor.apply();
         });
-        if(grupoActual==null){
-            DatabaseReference newgrupo = myRef.push();
-            newgrupo.child("NombreGrupo").setValue(user.getDisplayName());
-            newgrupo.child("Usuarios").push().setValue(user.getEmail());
-            grupoActual = newgrupo.getKey();
-        }
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("grupoActual", grupoActual);
-        editor.apply();
+
     }
 
 

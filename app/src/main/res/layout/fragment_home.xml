@@ -27,11 +27,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/Lista"
+        app:layout_constraintBottom_toBottomOf="@+id/cantTotal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.384"
         app:layout_constraintStart_toEndOf="@+id/cantTotal"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cantTotal"
         app:layout_constraintVertical_bias="0.603"
         tools:ignore="DuplicateIds" />
 
@@ -48,8 +48,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/Lista"
-        android:layout_width="408dp"
-        android:layout_height="310dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="30dp"
         android:layout_marginBottom="15dp"
         app:layout_constraintBottom_toTopOf="@+id/Moneda"
@@ -63,28 +63,21 @@
         android:id="@+id/logoutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:layout_marginTop="15dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="15dp"
         android:text="Logout"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.814"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.989" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/Moneda"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="15dp"
         android:text="Cambio Divisas"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.232"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.989" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 
