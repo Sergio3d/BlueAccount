@@ -84,14 +84,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mFirebaseAuth = FirebaseAuth.getInstance();
 
         FirebaseUser user = Objects.requireNonNull(mFirebaseAuth.getCurrentUser());
-        if(grupoActual==null) {
-            SharedPreferences sharedPref = MainActivity.this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
-            grupoActual = sharedPref.getString("grupoActual", null);
-            if(grupoActual==null) {
-                BuscarGrupoInicial(user, sharedPref);
+        if(user!=null) {
+            if (grupoActual == null) {
+                SharedPreferences sharedPref = MainActivity.this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);
+                grupoActual = sharedPref.getString("grupoActual", null);
+                if (grupoActual == null) {
+                    BuscarGrupoInicial(user, sharedPref);
+                }
             }
         }
-
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
