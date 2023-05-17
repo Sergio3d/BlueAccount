@@ -33,6 +33,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Objects;
 
 public class HomeFragment extends Fragment {
@@ -100,6 +102,12 @@ public class HomeFragment extends Fragment {
                         listTransac.add(0,newTransac);
                     }
                 }
+                Collections.sort(listTransac, new Comparator<TransacEntity>() {
+                    @Override
+                    public int compare(TransacEntity p1, TransacEntity p2) {
+                        return new Integer(p2.getFECHA().replaceAll("-","")).compareTo(new Integer(p1.getFECHA().replaceAll("-","")));
+                    }
+                });
                 LinearLayoutManager layoutManager = new LinearLayoutManager(HomeFragment.this.getContext());
                 TransacAdapter adapter = new TransacAdapter(listTransac);
                 lista.setLayoutManager(layoutManager);
