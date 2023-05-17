@@ -11,7 +11,7 @@
         android:id="@+id/Cambiar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Volver a gastos."
+        android:text="Volver a gastos"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.934"
@@ -21,12 +21,15 @@
 
     <Spinner
         android:id="@+id/spinner"
-        android:layout_width="405dp"
+        android:layout_width="0dp"
         android:layout_height="58dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.169"
-        tools:layout_editor_absoluteX="3dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="3dp"
+        android:contextClickable="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Divisa"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -45,21 +48,21 @@
         android:id="@+id/Euro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Volver a Euros."
+        android:text="Volver a Euros"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.91"
-        tools:layout_editor_absoluteX="16dp"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="16dp" />
 
     <TextView
         android:id="@+id/Respuesta"
-        android:layout_width="156dp"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:text="rspuesta"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/spinner"
+        app:layout_constraintStart_toStartOf="@+id/spinner"
+        app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
