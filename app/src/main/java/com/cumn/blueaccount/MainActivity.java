@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.logoutButton).setOnClickListener(this);
         mFirebaseAuth = FirebaseAuth.getInstance();
 
-        FirebaseUser user = Objects.requireNonNull(mFirebaseAuth.getCurrentUser());
+        FirebaseUser user = mFirebaseAuth.getCurrentUser();
         if(user!=null) {
             if (grupoActual == null) {
                 SharedPreferences sharedPref = MainActivity.this.getSharedPreferences(getString(R.string.rutaPreferences), Context.MODE_PRIVATE);

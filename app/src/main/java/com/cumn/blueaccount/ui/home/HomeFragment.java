@@ -55,10 +55,20 @@ public class HomeFragment extends Fragment {
         cantTotal = root.findViewById(R.id.cantTotal);
         nombreGrupo = root.findViewById(R.id.textNombreGrupo);
         libroCuentas = new ArrayList<Object>();
-
-        //boton cambio de activity
         boton = root.findViewById(R.id.Moneda);
         texto= root.findViewById(R.id.TextoMoneda);
+
+        //homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        String grupo = MainActivity.getGrupoActual();
+
+        //boton cambio de activity
         boton.setOnClickListener(v ->{
             Intent i = new Intent(HomeFragment.this.getContext(), Cambio_Divisas.class);
             startActivity(i);
@@ -68,19 +78,6 @@ public class HomeFragment extends Fragment {
         float numero=Seleccionado.GlobalVariables.getValor();
         String result = Seleccionado.GlobalVariables.myString.substring(0, Seleccionado.GlobalVariables.myString.indexOf(":")); // Obtiene la subcadena desde el inicio hasta ":"
         texto.setText(result);
-
-        //homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        return root;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        //nombreGrupo.setText(nameGrupo);
-
-        /*SharedPreferences sharedPref = HomeFragment.this.getParentFragment().getActivity().getSharedPreferences(getString(R.string.rutaPreferences),Context.MODE_PRIVATE);
-        String grupo = sharedPref.getString("grupoActual", "Yo");*/
-        String grupo = MainActivity.getGrupoActual();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://blueaccount-e4707-default-rtdb.europe-west1.firebasedatabase.app");
         DatabaseReference misCuentas = database.getReference("/Grupos/"+ grupo );
